@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tailwind_tags %}
+{% load tailwind_filters %}
+
+{% block title %}{{user.username}} Details{% endblock title %}
+{% block extra_head %}{% endblock extra_head %}
+
+<!-- NAVBAR -->
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+{% block content %}
+<!-- search_results.html -->
+<h1>Search Results</h1>
+
+<h1>{{ profile_user.username }}'s Profile</h1>
+<img src="{{ user.profile.picture.url }}" alt="{{ user.username }}'s profile picture">
+
+{% endblock %}
+<!-- MAIN -->
+<!-- left sidebar -->
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+
+
+
+
+
+
+
+
+
+<!-- main content -->
+
+
+{% comment %} {% endblock content %} {% endcomment %}
+
+<!-- right content -->
+{% block right_sidebar %}
+{% endblock right_sidebar %}
+
+
+<!-- FOOTER -->
+{% block footer %}
+
+{% endblock footer %}
+
+
+{% block javascript %}
+ <script src="{% static 'js/theme-toggle.js' %}"></script>
+ {% endblock javascript %}

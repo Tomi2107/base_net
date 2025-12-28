@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load tailwind_filters %}
+
+{% block title %}{{user.username}} Edit Profile{% endblock title %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% comment %} {% include 'components/sidebars/left/users/sidebar.html' %} {% endcomment %}
+{% endblock left_sidebar %}
+
+{% block content %}
+
+<div class="w-full flex flex-col">
+
+    <!-- ================= PERFIL ================= -->
+    <form class="form-horizontal dark:text-dark-txt w-full"
+          method="post"
+          enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mt-1 sm:mt-0 sm:col-span-2">
+            <img class="h-28 w-full bg-cover"
+                 src="{{ user.profile.banner.url }}"
+                 alt="{{ user.username }} Banner Picture">
+
+            <div class="max-w-lg flex justify-center px-6 pt-5 pb-6 border-2
+                        dark:border-dark-third border-gray-300 border-dashed rounded-md">
+                {{ form.banner }}
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="mt-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t
+                        dark:border-dark-third border-gray-200 sm:pt-5">
+                <label class="block text-sm font-medium dark:text-dark-txt text-gray-700">
+                    Photo
+                </label>
+
+                <div class="sm:col-span-2 flex items-center">
+                    <span class="mr-4 h-18 w-18 rounded-full overflow-hidden dark:bg-dark-third bg-gray-100">
+                        <img src="{{ user.profile.picture.url }}" alt="">
+                    </span>
+                    {{ form.picture }}
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <label class="block text-sm font-medium dark:text-dark-txt text-gray-700">
+                    First Name
+                </label>
+                {{ form.first_name }}
+            </div>
+
+            <label class="block text-sm font-medium dark:text-dark-txt text-gray-700">
+                Last Name
+            </label>
+            {{ form.last_name }}
+
+            <label class="block text-sm font-medium dark:text-dark-txt text-gray-700">
+                Bio
+            </label>
+            {{ form.bio }}
+
+            <label class="block text-sm font-medium dark:text-dark-txt text-gray-700">
+                Location
+            </label>
+            {{ form.location }}
+
+            <label class="block text-sm font-medium dark:text-dark-txt text-gray-700">
+                Birthday
+            </label>
+            {{ form.birthday }}
+
+            <label class="block text-sm font-medium dark:text-dark-txt text-gray-700">
+                Website
+            </label>
+            {{ form.url }}
+
+            <div class="mt-6 flex justify-between">
+                <a href="{% url 'users:profile' username=user.username %}"
+                   class="px-3 py-1 rounded bg-gray-200 dark:bg-dark-second">
+                    Return
+                </a>
+
+                <button type="submit"
+                        class="px-3 py-1 rounded bg-indigo-600 text-white">
+                    Update
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- ================= MASCOTAS ================= -->
+    <section class="w-full mt-12">
+
+        <h3 class="text-lg font-semibold dark:text-dark-txt mb-4">
+            🐾 Mis mascotas
+        </h3>
+
+        {% for pet in pets %}
+            <div class="p-3 mb-2 bg-gray-100 dark:bg-dark-third rounded">
+                <strong>{{ pet.name }}</strong> – {{ pet.get_species_display }}
+                <div class="text-sm text-gray-500">
+                    {{ pet.breed }} · {{ pet.color }} · {{ pet.get_size_display }}
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-sm text-gray-500">No cargaste mascotas todavía</p>
+        {% endfor %}
+
+        <form method="post" class="mt-6">
+            {% csrf_token %}
+            {{ pet_form|crispy }}
+
+            <button type="submit"
+                    name="add_pet"
+                    class="mt-2 px-3 py-1 rounded bg-indigo-600 text-white">
+                ➕ Agregar mascota
+            </button>
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock content %}

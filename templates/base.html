@@ -1,0 +1,79 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind compilado -->
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
+
+    <!-- AlpineJS -->
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+
+    <!-- Boxicons -->
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- JQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+
+    <!-- Theme init -->
+    <script src="{% static 'js/theme-init.js' %}"></script>
+
+
+    {% block extra_head %}{% endblock extra_head %}
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+
+<body class="bg-gray-100 dark:bg-dark-main  ">
+    
+    <!-- NAVBAR -->
+    {% block navbar %}{% endblock navbar %}
+
+    <!--CONTENT-->
+     <div class="flex justify-center h-screen ">
+        <!--left sidebar-->
+        <div class="w-1/5 pt-16 h-full hidden md:flex flex-col fixed top-0 left-0 overflow-y-auto">
+        {% block left_sidebar %}{% endblock left_sidebar %}
+        </div>
+
+        <!--main content-->
+        <div class="w-full lg:w-2/3 xl:w-2/5 pt-32 lg:pt-16 px-2">
+        {% block messages %}{% include 'messages.html' %}{% endblock messages %}
+        {% block content %}{% endblock content %}
+        </div>
+
+        <!--right sidebar-->
+        <div class="w-1/5 pt-16 h-full hidden md:block px-4 fixed top-0 right-0 overflow-y-auto">
+        {% if user.is_authenticated %}
+        {% block right_sidebar  %}{% endblock right_sidebar %}
+        {% endif %}
+        </div>
+        
+        <!-- tailwind-force -->
+        <div class="hidden translate-x-6"></div>
+
+
+     </div>
+
+    <!--RIGHT SIDEBAR-->
+
+    <!-- FOOTER -->
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
+    {% comment %} <script src="{% static '/js/app.js' %}"> </script> {% endcomment %}
+    
+    {% block javascript %}
+    <script src="{% static 'js/theme-toggle.js' %}"></script>
+
+    {% endblock javascript %}
+
+        
+
+
+</body>
+</html>

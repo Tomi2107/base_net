@@ -1,0 +1,16 @@
+{
+  "name": "redsocialx",
+  "version": "1.0.0",
+  "description": "1    cd RedSocialX\r 2  python -m venv Socialenv  \r 3  Socialenv/Scripts/activate\r 4  python.exe -m pip install --upgrade pip\r previa\r 1 incorpore todas las carpetas para que agregue las actualizaciones delassiete que hay en gith, + detalles en los videos..\r nota: no llego a hacer las otras web mercado.. etc.. ni el deploy a aws..\r 2 pip install pip-upgrader\r 3 pip-upgrade dentro de la carpeta raiz e hizo upgrade de requirements.txt\r 4 python.exe -m pip install --upgrade pip para installar los paquetes\r 5 python manage.py make migrations -> migrate\r 6 create superuser python manage.py createsuperuser primero agregue el .env dentro social dentro de core //core apli de proyecto no app \r 7 Username: SocialRedX\r 8 Email address: tom.palmeyro@gmail.com\r 9 Password: SocialRedX21\r  agregar NPM_BIN_PATH = \"C:/Program Files/nodejs/npm.cmd\" a settinmgs antes de probar los siguientes npm comandos\r 10 npm install node.js version actuall -> npm install -g npm@10.9.0\r 11 npm install @tailwindcss/line-clamp ->  @tailwindcss/typography -> @tailwindcss/forms -> @tailwindcss/aspect-ratio\r x npm install tailwindcss postcss autoprefixer\r   npm install postcss-simple-vars\r 12 python manage.py tailwind start\r 13 python manage.py runserver en otra consola",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"npx tailwindcss -i ./theme/input.css -o ./static/css/tailwind.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^4.1.17"
+  }
+}

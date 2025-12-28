@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Account Settings{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+{% block content %}
+
+<div class="pt-24 px-3 max-w-xl mx-auto">
+
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow p-5">
+
+        <h1 class="text-xl font-bold mb-6 dark:text-dark-txt">
+            ⚙️ Account settings
+        </h1>
+
+        <!-- SETTINGS MENU -->
+        <ul class="space-y-4">
+
+            <!-- ACTIVITY -->
+            <li class="flex items-center justify-between">
+                <span class="font-medium dark:text-dark-txt">
+                    Activity & sessions
+                </span>
+                <a href="#"
+                   class="text-sm text-blue-500 hover:underline">
+                    View
+                </a>
+            </li>
+
+            <li class="border-b dark:border-dark-third"></li>
+
+            <!-- DARK MODE -->
+            <li class="flex items-center justify-between">
+                <span class="font-medium dark:text-dark-txt">
+                    Dark mode
+                </span>
+
+                <!-- TOGGLE -->
+                <button
+                    id="theme-toggle"
+                    type="button"
+                    class="relative w-12 h-6 rounded-full transition
+                        bg-gray-300 dark:bg-blue-500">
+
+                    <span
+                        id="theme-toggle-circle"
+                        class="absolute top-1 left-1 w-4 h-4 bg-white
+                            rounded-full transition-transform duration-300">
+                    </span>
+</button>
+
+
+            </li>
+
+            <li class="border-b dark:border-dark-third"></li>
+
+            <!-- PRIVACY -->
+            <li class="flex items-center justify-between">
+                <span class="font-medium dark:text-dark-txt">
+                    Privacy & security
+                </span>
+                <a href="#"
+                   class="text-sm text-blue-500 hover:underline">
+                    Manage
+                </a>
+            </li>
+
+            <li class="border-b dark:border-dark-third"></li>
+
+            <!-- LOGOUT -->
+            <li class="flex items-center justify-between">
+                <span class="font-medium text-red-500">
+                    Log out
+                </span>
+                <a href="{% url 'account_logout' %}"
+                   class="text-sm text-red-500 hover:underline">
+                    Exit
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+</div>
+
+{% endblock content %}

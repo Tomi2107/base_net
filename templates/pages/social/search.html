@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tailwind_tags %}
+{% load tailwind_filters %}
+
+{% block title %}{{user.username}} Details{% endblock title %}
+{% block extra_head %}{% endblock extra_head %}
+
+<!-- NAVBAR -->
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+{% block content %}
+<!-- search_results.html -->
+<h1>Search Results</h1>
+
+{% if query %}
+    <p>Results for "{{ query }}":</p>
+{% endif %}
+
+
+<ul>
+    {% for user in users %}
+        <li>
+            <!-- Enlace al perfil del usuario con su imagen y nombre de usuario -->
+            <a href="{% url 'users:profile' user.username %}">
+                <img src="{{ user.profile.picture.url }}" alt="{{ user.username }}'s profile picture" class="w-50 h-50 rounded-full">
+                {{ user.username }}
+            </a>
+        </li>
+    {% empty %}
+        <p>No users found.</p>
+    {% endfor %}
+</ul>
+{% endblock %}
+<!-- MAIN -->
+<!-- left sidebar -->
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+
+
+
+
+
+
+
+
+
+<!-- main content -->
+
+
+{% comment %} {% endblock content %} {% endcomment %}
+
+<!-- right content -->
+{% block right_sidebar %}
+{% endblock right_sidebar %}
+
+
+<!-- FOOTER -->
+{% block footer %}
+
+{% endblock footer %}
+
+
+{% block javascript %}{% endblock javascript %}

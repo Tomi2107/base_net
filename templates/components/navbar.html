@@ -1,0 +1,165 @@
+{% load static %}
+
+<nav class="bg-white dark:bg-dark-second
+            h-14 w-full shadow
+            flex items-center justify-between
+            fixed top-0 z-50 border-b dark:border-dark-third">
+
+
+    <!-- LEFT NAV -->
+    <div class="flex items-center justify-between w-full md:w-max px-4 py-2">
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'home' %}" class="mr-2 hidden md:inline-block">
+                <img src="{% static 'img/logo.png' %}" alt="miLogo"
+                    class="w-24 sm:w-20 lg:w-10 h-auto">
+            </a>
+            {% endif %}
+        </div>
+    <!-- END LEFT NAV -->
+
+    <!-- MAIN NAV -->
+    {% if user.is_authenticated %}
+    <ul class="flex w-full lg:w-max items-center justify-center">
+
+        <!-- HOME -->
+        <li class="w-1/5 md:w-max text-center">
+            <a href="{% url 'home' %}"
+               class="w-full text-3xl py-2 px-4 xl:px-12 inline-block
+               {% if request.resolver_match.url_name == 'home' %}
+                   text-blue-500 border-b-4 border-blue-500
+               {% else %}
+                   text-gray-600 hover:bg-gray-100 dark:text-dark-txt dark:hover:bg-dark-third
+               {% endif %}">
+                <i class='bx bxs-home'></i>
+            </a>
+        </li>
+
+        <!-- REELS -->
+        <li class="w-1/5 md:w-max text-center">
+            <a href="{% url 'reels:list' %}"
+               class="w-full text-3xl py-2 px-4 xl:px-12 inline-block
+               {% if request.resolver_match.url_name == 'reels' %}
+                   text-blue-500 border-b-4 border-blue-500
+               {% else %}
+                   text-gray-600 hover:bg-gray-100 dark:text-dark-txt dark:hover:bg-dark-third
+               {% endif %}">
+                <i class='bx bx-movie-play'></i>
+            </a>
+        </li>
+
+        <!-- STORE -->
+        <li class="w-1/5 md:w-max text-center">
+            <a href="{% url 'store:list' %}"
+               class="w-full text-3xl py-2 px-4 xl:px-12 inline-block
+               {% if request.resolver_match.app_name == 'store' %}
+                   text-blue-500 border-b-4 border-blue-500
+               {% else %}
+                   text-gray-600 hover:bg-gray-100 dark:text-dark-txt dark:hover:bg-dark-third
+               {% endif %}">
+                <i class='bx bx-store'></i>
+            </a>
+        </li>
+
+        <!-- GROUPS -->
+        <li class="w-1/5 md:w-max text-center">
+            <a href="{% url 'groups:list' %}"
+               class="w-full text-3xl py-2 px-4 xl:px-12 inline-block
+               {% if request.resolver_match.url_name == 'groups' %}
+                   text-blue-500 border-b-4 border-blue-500
+               {% else %}
+                   text-gray-600 hover:bg-gray-100 dark:text-dark-txt dark:hover:bg-dark-third
+               {% endif %}">
+                <i class='bx bx-group'></i>
+            </a>
+        </li>
+
+        <!-- STORE -->
+        <li class="w-1/5 md:w-max text-center">
+            <a href="{% url 'lost_found:feed' %}"
+               class="w-full text-3xl py-2 px-4 xl:px-12 inline-block
+               {% if request.resolver_match.app_name == 'lost_found' %}
+                   text-blue-500 border-b-4 border-blue-500
+               {% else %}
+                   text-gray-600 hover:bg-gray-100 dark:text-dark-txt dark:hover:bg-dark-third
+               {% endif %}">
+                <i class='bx bx-search-alt'></i>
+            </a>
+        </li>
+
+        <!-- STORE -->
+        <li class="w-1/5 md:w-max text-center">
+            <a href="{% url 'parroquiales:list' %}"
+               class="w-full text-3xl py-2 px-4 xl:px-12 inline-block
+               {% if request.resolver_match.app_name == 'parroquiales' %}
+                   text-blue-500 border-b-4 border-blue-500
+               {% else %}
+                   text-gray-600 hover:bg-gray-100 dark:text-dark-txt dark:hover:bg-dark-third
+               {% endif %}">
+                <i class='bx bx-plus-medical'></i>
+            </a>
+        </li>
+
+        <!-- MENU -->
+        <li class="hidden md:block text-center">
+            <button class="text-3xl py-2 px-4 xl:px-12 text-gray-600 hover:bg-gray-100 dark:text-dark-txt dark:hover:bg-dark-third">
+                <i class='bx bx-menu'></i>
+            </button>
+        </li>
+
+    </ul>
+    {% endif %}
+    <!-- END MAIN NAV -->
+
+    <!-- RIGHT NAV -->
+    <ul class="hidden md:flex mx-4 items-center justify-center">
+        {% if not user.is_authenticated %}
+        
+            <a href="{% url 'account_login' %}" class="inline-flex items-center justify-center p-1 rounded-full hover:bg-gray-200 dark:hover:bg-dark-third mx-1">
+                
+                <span class="mx-2 font-semibold dark:text-dark-txt">Login</span>
+            </a>
+            <a href="{% url 'account_signup' %}" class="inline-flex items-center justify-center p-1 rounded-full hover:text-white  hover:bg-blue-600 dark:hover:bg-dark-third mx-1">
+                
+                <span class="mx-2 font-semibold dark:text-dark-txt">Register</span>
+            </a>
+        
+        {% else %}
+
+        <li class="h-full xl:flex">
+            <a href="#" class="inline-flex items-center justify-center p-1 rounded-full hover:bg-gray-200 dark:hover:bg-dark-third mx-1">
+                <i class='bx bx-coin text-yellow-400'></i>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span class="mx-2 font-semibold dark:text-dark-txt">{{user.profile.coins}}</span>
+            </a>
+        </li>
+
+        <li>
+            <div x-data="{open:false}">
+            <div @click="open=true" class="text-xl grid place-items-center dark:bg-dark-second bg-gray-200 dark:bg-dark-third dark:text-dark-txt rounded-full mx-1 p-3 cursor-pointer hover:bg-gray-300 relative">
+                <i class='bx bxs-bell'></i>
+                <span class="text-xs absolute top-0 right-0 bg-red-500 text-white font-semibold rounded-full px-1 text-center">9</span>
+            </div>
+
+                <div x-show="open" @click.away="open=false" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                    <div class="py-1" role="menuiten">
+                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                    <a href="{% url 'account_settings' %}" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Account settings</a>
+                    <a href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Support</a>
+                    <a href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">License</a>
+                       
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'account_logout' %}" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Sign Out</a>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </li>
+        {% endif %}
+    </ul>
+    <!-- END RIGHT NAV -->
+
+</nav>

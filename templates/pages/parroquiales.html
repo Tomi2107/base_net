@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Parroquiales{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+{% block content %}
+
+<div class="pt-24 max-w-3xl mx-auto px-3">
+
+    <!-- HEADER + CREATE POST -->
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow p-4 mb-6">
+        <h1 class="text-xl font-bold dark:text-dark-txt mb-4">
+            🏥 Servicios Parroquiales
+        </h1>
+
+        <!-- CREATE POST FORM -->
+        <form method="post" action="{% url 'parroquiales:create' %}" novalidate>
+            {% csrf_token %}
+
+            <div class="space-y-4">
+
+                <div>
+                    {{ form.title.label_tag }}
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ form.title.errors|striptags }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {{ form.service_type.label_tag }}
+                    {{ form.service_type }}
+                    {% if form.service_type.errors %}
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ form.service_type.errors|striptags }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {{ form.zone.label_tag }}
+                    {{ form.zone }}
+                    {% if form.zone.errors %}
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ form.zone.errors|striptags }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {{ form.content.label_tag }}
+                    {{ form.content }}
+                    {% if form.content.errors %}
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ form.content.errors|striptags }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div class="text-right pt-2">
+                    <button
+                        type="submit"
+                        class="px-5 py-2 rounded-lg bg-blue-500 text-white
+                               hover:bg-blue-600 transition">
+                        Publicar
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow p-4 mb-6">
+        <form method="get" action="{% url 'parroquiales:list' %}"
+              class="flex flex-col md:flex-row gap-3">
+
+            <input
+                type="text"
+                name="q"
+                value="{{ request.GET.q }}"
+                placeholder="Buscar por texto o zona..."
+                class="flex-1 pl-4 pr-4 py-2 rounded-lg border
+                       dark:bg-dark-main dark:border-dark-third dark:text-dark-txt">
+
+            <select
+                name="service"
+                class="w-full md:w-56 py-2 px-3 rounded-lg border
+                       dark:bg-dark-main dark:border-dark-third dark:text-dark-txt">
+                <option value="">Todos los servicios</option>
+                <option value="vet">Veterinarias</option>
+                <option value="grooming">Peluquería</option>
+                <option value="walker">Paseadores</option>
+                <option value="discounts">Descuentos</option>
+                <option value="food">Alimentos</option>
+                <option value="clinics">Clínicas</option>
+            </select>
+
+            <button
+                type="submit"
+                class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300
+                       dark:bg-dark-third dark:text-dark-txt">
+                Filtrar
+            </button>
+        </form>
+    </div>
+
+    <!-- FEED -->
+    <div class="space-y-4">
+        {% for post in posts %}
+        <div class="bg-white dark:bg-dark-second rounded-lg shadow p-4">
+
+            <div class="flex items-center mb-3">
+                <img
+                    src="{% static 'img/avatar-placeholder.png' %}"
+                    class="w-10 h-10 rounded-full mr-3"
+                    alt="avatar">
+
+                <div>
+                    <p class="font-semibold dark:text-dark-txt">
+                        {{ post.author.username }}
+                    </p>
+                    <p class="text-xs text-gray-500">
+                        {{ post.get_service_type_display }} · {{ post.zone }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-sm dark:text-dark-txt mb-4 whitespace-pre-line">
+                {{ post.content }}
+            </div>
+
+            <div class="flex justify-between items-center border-t pt-3
+                        border-gray-200 dark:border-dark-third">
+                <span class="text-xs text-gray-500">
+                    {{ post.created_at|timesince }} atrás
+                </span>
+
+                <a
+                    href="#"
+                    class="flex items-center gap-2 px-4 py-2 text-sm
+                           bg-blue-500 text-white rounded-lg
+                           hover:bg-blue-600 transition">
+                    <i class='bx bx-message-rounded'></i>
+                    Contactar
+                </a>
+            </div>
+        </div>
+
+        {% empty %}
+            <p class="text-center text-gray-500">
+                No hay publicaciones aún en tu zona.
+            </p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'js/theme-toggle.js' %}"></script>
+{% endblock javascript %}

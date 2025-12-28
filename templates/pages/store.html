@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Store{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+<!-- STORE HEADER -->
+<div class="bg-white dark:bg-dark-second rounded-lg p-4 shadow mb-4">
+
+    <!-- CREATE ITEM -->
+    <div class="bg-white dark:bg-dark-second rounded-lg p-4 shadow mb-6">
+
+        <h2 class="text-lg font-semibold dark:text-dark-txt mb-4">
+            🛒 Publicar en Store
+        </h2>
+
+        <form method="post"
+              action="{% url 'store:create' %}"
+              enctype="multipart/form-data"
+              class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            {% csrf_token %}
+
+            {{ form.title }}
+            {{ form.price }}
+            {{ form.item_type }}
+            {{ form.location }}
+
+            <div class="md:col-span-2">
+                {{ form.description }}
+            </div>
+
+            <div class="md:col-span-2">
+                {{ form.image }}
+            </div>
+
+            <div class="md:col-span-2 text-right">
+                <button
+                    type="submit"
+                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                    Publicar
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Search + Filters (visual) -->
+    <div class="flex flex-col md:flex-row gap-3">
+
+        <div class="flex-1 relative">
+            <input
+                type="text"
+                placeholder="Buscar productos o servicios..."
+                class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300
+                       dark:bg-dark-main dark:border-dark-third dark:text-dark-txt">
+            <i class='bx bx-search absolute left-3 top-2.5 text-xl text-gray-400'></i>
+        </div>
+
+        <div class="w-full md:w-40">
+            <select class="w-full py-2 px-3 rounded-lg border border-gray-300
+                           dark:bg-dark-main dark:border-dark-third dark:text-dark-txt">
+                <option value="all">Todos</option>
+                <option value="product">Productos</option>
+                <option value="service">Servicios</option>
+            </select>
+        </div>
+
+        <div class="w-full md:w-48">
+            <select class="w-full py-2 px-3 rounded-lg border border-gray-300
+                           dark:bg-dark-main dark:border-dark-third dark:text-dark-txt">
+                <option value="">Ordenar</option>
+                <option value="price_desc">Mayor precio</option>
+                <option value="price_asc">Menor precio</option>
+            </select>
+        </div>
+
+    </div>
+</div>
+
+<!-- STORE GRID -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+
+    {% for item in items %}
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow hover:shadow-md transition
+                overflow-hidden flex flex-col">
+
+        <!-- Image -->
+        <div class="h-40 bg-gray-200 dark:bg-dark-third">
+            {% if item.image %}
+                <img src="{{ item.image.url }}"
+                     alt="{{ item.title }}"
+                     class="w-full h-full object-cover">
+            {% else %}
+                <img src="{% static 'img/placeholder-store.jpg' %}"
+                     alt="Item"
+                     class="w-full h-full object-cover">
+            {% endif %}
+        </div>
+
+        <!-- Content -->
+        <div class="p-3 flex flex-col flex-1">
+
+            <h3 class="font-semibold text-sm dark:text-dark-txt line-clamp-2">
+                {{ item.title }}
+            </h3>
+
+            <p class="text-sm font-semibold text-blue-500 mt-1">
+                ${{ item.price }}
+            </p>
+
+            <p class="text-xs text-gray-500 dark:text-dark-txt mt-1">
+                {{ item.location }}
+            </p>
+
+            <p class="text-sm text-gray-600 dark:text-dark-txt mt-2 line-clamp-2">
+                {{ item.description }}
+            </p>
+
+            <div class="mt-auto pt-3">
+                <button
+                    class="w-full py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition">
+                    Enviar mensaje
+                </button>
+            </div>
+
+        </div>
+    </div>
+    {% empty %}
+        <p class="col-span-full text-center text-gray-500 dark:text-dark-txt py-8">
+            Todavía no hay publicaciones en el store.
+        </p>
+    {% endfor %}
+
+</div>
+
+{% endblock content %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/theme-toggle.js' %}"></script>
+{% endblock javascript %}

@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Perdidos & Encontrados{% endblock %}
+
+{% block navbar %}
+{% include "components/navbar.html" %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include "components/sidebars/left/sidebar.html" %}
+{% endblock left_sidebar %}
+
+{% block content %}
+
+<div class="pt-24 max-w-6xl mx-auto px-3">
+
+    <!-- HEADER -->
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow p-5 mb-8">
+        <h1 class="text-xl font-bold dark:text-dark-txt mb-6">
+            🐾 Perdidos y Encontrados
+        </h1>
+
+        <!-- CREATE POST FORM -->
+        <form method="post"
+              action="{% url 'lost_found:feed' %}
+              "
+              enctype="multipart/form-data"
+              class="space-y-5">
+
+            {% csrf_token %}
+
+            <!-- STATUS -->
+            <div>
+                <label class="block text-sm font-semibold mb-2 dark:text-dark-txt">
+                    Estado del animal
+                </label>
+
+                {% if form.status.errors %}
+                    <p class="text-sm text-red-500 mb-2">
+                        {{ form.status.errors.0 }}
+                    </p>
+                {% endif %}
+
+                <div class="flex gap-6">
+                    {% for radio in form.status %}
+                        <label class="flex items-center gap-2 text-sm dark:text-dark-txt cursor-pointer">
+                            {{ radio.tag }}
+                            <span>{{ radio.choice_label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+            <!-- MAIN FIELDS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <!-- ANIMAL -->
+                <div>
+                    <label class="text-sm font-semibold dark:text-dark-txt">
+                        Animal
+                    </label>
+                    {{ form.animal_type }}
+                </div>
+
+                <!-- OTHER ANIMAL -->
+                <div id="animal-other-wrapper" class="hidden">
+                    <label class="text-sm font-semibold dark:text-dark-txt">
+                        Especificar animal
+                    </label>
+                    {{ form.animal_other }}
+                </div>
+
+                <!-- SIZE -->
+                <div>
+                    <label class="text-sm font-semibold dark:text-dark-txt">
+                        Tamaño
+                    </label>
+                    {{ form.size }}
+                </div>
+
+                <!-- COLOR -->
+                <div>
+                    <label class="text-sm font-semibold dark:text-dark-txt">
+                        Color principal
+                    </label>
+                    {{ form.color }}
+                </div>
+
+                <!-- PATTERN -->
+                <div>
+                    <label class="text-sm font-semibold dark:text-dark-txt">
+                        Patrón
+                    </label>
+                    {{ form.pattern }}
+                </div>
+
+                <!-- PLACE -->
+                <div>
+                    <label class="text-sm font-semibold dark:text-dark-txt">
+                        Zona / lugar
+                    </label>
+                    {{ form.place }}
+                </div>
+
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div>
+                <label class="text-sm font-semibold dark:text-dark-txt">
+                    Descripción
+                </label>
+                {{ form.description }}
+            </div>
+
+            <!-- IMAGES -->
+            <div>
+                <label class="text-sm font-semibold dark:text-dark-txt">
+                    Imágenes
+                </label>
+                <input type="file"
+                       name="images"
+                       multiple
+                       accept="image/*"
+                       class="mt-2 block w-full text-sm">
+                <p class="text-xs text-gray-500 mt-1">
+                    Hasta 3 imágenes · máximo 2MB cada una
+                </p>
+            </div>
+
+            <!-- SUBMIT -->
+        <div class="text-right pt-2">
+            <div class="flex justify-end gap-3 pt-2">
+            <button
+                type="submit"
+                formmethod="get"
+                class="px-6 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
+                Buscar
+            </button>
+
+            <button
+                type="submit"
+                formmethod="post"
+                class="px-6 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition">
+                Publicar aviso
+            </button>
+            </div>
+        </div>
+        </form>
+    </div>
+
+    <!-- POSTS GRID -->
+    {% if posts %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+
+            {% for post in posts %}
+                <div class="bg-white dark:bg-dark-second rounded-lg shadow overflow-hidden">
+
+                    <!-- IMAGE -->
+                    <div class="h-52 bg-gray-200 dark:bg-dark-third">
+                        {% if post.images.first %}
+                            <img src="{{ post.images.first.image.url }}"
+                                 class="w-full h-full object-cover" alt="">
+                        {% else %}
+                            <img src="{% static 'img/animal-placeholder.jpg' %}"
+                                 class="w-full h-full object-cover" alt="">
+                        {% endif %}
+                    </div>
+
+                    <!-- BODY -->
+                    <div class="p-4">
+                        <p class="text-sm font-semibold dark:text-dark-txt">
+                            {{ post.get_status_display }} · {{ post.animal_type }}
+                        </p>
+
+                        <p class="text-xs text-gray-500 mt-1">
+                            {{ post.place }}
+                        </p>
+
+                        <p class="text-sm dark:text-dark-txt mt-2 line-clamp-3">
+                            {{ post.description }}
+                        </p>
+                    </div>
+
+                </div>
+            {% endfor %}
+
+        </div>
+    {% else %}
+        <p class="text-center text-gray-500 mt-12">
+            No hay publicaciones todavía.
+        </p>
+    {% endif %}
+
+</div>
+
+{% endblock content %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/theme-toggle.js' %}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const animalSelect = document.getElementById("id_animal_type");
+    const otherWrapper = document.getElementById("animal-other-wrapper");
+
+    function toggleOther() {
+        if (animalSelect.value === "other") {
+            otherWrapper.classList.remove("hidden");
+        } else {
+            otherWrapper.classList.add("hidden");
+        }
+    }
+
+    animalSelect.addEventListener("change", toggleOther);
+    toggleOther();
+});
+</script>
+{% endblock javascript %}

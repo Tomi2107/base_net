@@ -1,0 +1,92 @@
+{% load static %}
+
+        <!-- bloques -->
+
+
+<ul class="p-4 space-y-1">
+
+    <!-- PROFILE -->
+    <li>
+        <a href="{% url 'users:profile' user.username %}"
+           class="flex items-center space-x-3 p-2 rounded-lg
+                  hover:bg-gray-200 dark:hover:bg-dark-third
+                  dark:text-dark-txt transition">
+            <img src="{{ user.profile.picture.url }}"
+                 alt="Profile picture"
+                 class="w-10 h-10 rounded-full object-cover">
+            <span class="font-semibold">{{ user.username }}</span>
+        </a>
+    </li>
+
+    <!-- FOLLOWERS -->
+    <li>
+        <a href="{% url 'users:followers-list' pk=user.pk %}"
+           class="flex items-center space-x-3 p-2 rounded-lg
+                  hover:bg-gray-200 dark:hover:bg-dark-third
+                  dark:text-dark-txt transition">
+            <i class='bx bx-user-plus text-xl text-gray-500'></i>
+            <span class="font-semibold">Followers</span>
+        </a>
+    </li>
+
+    <!-- FRIENDS (FUTURO) -->
+    <li>
+        <a href="#"
+           class="flex items-center space-x-3 p-2 rounded-lg
+                  opacity-60 cursor-not-allowed
+                  dark:text-dark-txt">
+            <i class='bx bx-group text-xl'></i>
+            <span class="font-semibold">Friends (soon)</span>
+        </a>
+    </li>
+
+    <!-- SEE MORE -->
+    <li x-data="{ open: false }">
+        <button @click="open = !open"
+                class="w-full flex items-center space-x-3 p-2 rounded-lg
+                       hover:bg-gray-200 dark:hover:bg-dark-third
+                       dark:text-dark-txt transition">
+            <span class="w-10 h-10 rounded-full grid place-items-center
+                         bg-gray-300 dark:bg-dark-second">
+                <i class='bx bx-chevron-down'
+                   :class="open && 'rotate-180'"></i>
+            </span>
+            <span class="font-semibold">See more</span>
+        </button>
+
+        <!-- DROPDOWN -->
+        <ul x-show="open"
+            x-transition
+            class="mt-2 ml-12 space-y-1 text-sm">
+
+            <li>
+                <a href="#"
+                   class="block p-2 rounded hover:bg-gray-100
+                          dark:hover:bg-dark-third">
+                    🏪 Comercios seguidos
+                </a>
+            </li>
+
+            <li>
+                <a href="#"
+                   class="block p-2 rounded hover:bg-gray-100
+                          dark:hover:bg-dark-third">
+                    🐾 Servicios / Paseadores
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'groups:list' %}"
+                   class="block p-2 rounded hover:bg-gray-100
+                          dark:hover:bg-dark-third">
+                    👥 Grupos seguidos
+                </a>
+            </li>
+
+        </ul>
+    </li>
+
+    <li class="border-b border-gray-200 dark:border-dark-third mt-6"></li>
+
+</ul>
+

@@ -1,0 +1,94 @@
+# ======================================================
+# PYTHON
+# ======================================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# ======================================================
+# VIRTUAL ENVIRONMENTS
+# ======================================================
+.env
+.env.*
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+Socialenv/
+
+# ======================================================
+# DJANGO
+# ======================================================
+*.log
+local_settings.py
+
+# SQLite (NO usamos en prod, DB externa)
+db.sqlite3
+db.sqlite3-journal
+
+# Media uploads (opcional: subir solo en prod)
+media/
+
+# Django collectstatic (si usás)
+staticfiles/
+
+# ======================================================
+# TESTING / COVERAGE
+# ======================================================
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+
+# ======================================================
+# NODE / TAILWIND (NO subir Node)
+# ======================================================
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ======================================================
+# ⚠️ TAILWIND CSS COMPILADO (ESTO SÍ SE SUBE)
+# ======================================================
+!static/
+!static/css/
+!static/css/tailwind.css
+
+# ======================================================
+# FRONTEND SOURCE (opcional)
+# Si querés versionar el código fuente de Tailwind
+# comentá estas líneas
+# ======================================================
+#static_src/.cache/
+#static_src/node_modules/
+
+# ======================================================
+# PYTHONANYWHERE
+# ======================================================
+*.log
+.python-version
+
+# ======================================================
+# OS / EDITORS
+# ======================================================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# ======================================================
+# GIT
+# ======================================================
+.git/
+.gitignore.backup

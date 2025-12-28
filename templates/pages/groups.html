@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Grupos{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+{% block content %}
+
+<div class="pt-24 max-w-3xl mx-auto px-3">
+
+    <!-- HEADER + CREATE GROUP -->
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow p-4 mb-6">
+
+        <h1 class="text-xl font-bold dark:text-dark-txt mb-4">
+            👥 Grupos
+        </h1>
+
+        <!-- CREATE GROUP FORM -->
+        <form method="post"
+              action="{% url 'groups:create' %}"
+              enctype="multipart/form-data"
+              novalidate>
+
+            {% csrf_token %}
+
+            <div class="space-y-4">
+
+                <div>
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ form.name.errors|striptags }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {{ form.location.label_tag }}
+                    {{ form.location }}
+                    {% if form.location.errors %}
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ form.location.errors|striptags }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {{ form.privacy.label_tag }}
+                    {{ form.privacy }}
+                    {% if form.privacy.errors %}
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ form.privacy.errors|striptags }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ form.description.errors|striptags }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {{ form.image.label_tag }}
+                    {{ form.image }}
+                    {% if form.image.errors %}
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ form.image.errors|striptags }}
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div class="text-right pt-2">
+                    <button
+                        type="submit"
+                        class="px-5 py-2 rounded-lg bg-blue-500 text-white
+                               hover:bg-blue-600 transition">
+                        Crear grupo
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <!-- GROUPS LIST -->
+    <div class="space-y-4">
+
+        {% for group in groups %}
+        <div class="bg-white dark:bg-dark-second rounded-lg shadow p-4">
+
+            <div class="flex gap-4">
+
+                <!-- IMAGE -->
+                <div class="w-20 h-20 flex-shrink-0">
+                    {% if group.image %}
+                        <img src="{{ group.image.url }}"
+                             class="w-full h-full object-cover rounded-lg"
+                             alt="{{ group.name }}">
+                    {% else %}
+                        <img src="{% static 'img/placeholder-group.jpg' %}"
+                             class="w-full h-full object-cover rounded-lg"
+                             alt="Grupo">
+                    {% endif %}
+                </div>
+
+                <!-- INFO -->
+                <div class="flex-1">
+                    <h3 class="font-semibold text-base dark:text-dark-txt">
+                        {{ group.name }}
+                    </h3>
+
+                    <p class="text-sm text-gray-500">
+                        {{ group.location }} · {{ group.get_privacy_display }}
+                    </p>
+
+                    <p class="text-sm text-gray-600 dark:text-dark-txt mt-2 line-clamp-2">
+                        {{ group.description }}
+                    </p>
+
+                    <div class="flex gap-3 mt-4">
+                        <button
+                            class="px-4 py-1.5 text-sm rounded-lg
+                                   bg-blue-500 text-white hover:bg-blue-600 transition">
+                            Unirse
+                        </button>
+
+                        <button
+                            class="px-4 py-1.5 text-sm rounded-lg border
+                                   dark:border-dark-third dark:text-dark-txt
+                                   hover:bg-gray-100 dark:hover:bg-dark-third transition">
+                            Ver grupo
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        {% empty %}
+            <p class="text-center text-gray-500 py-8">
+                Todavía no hay grupos creados.
+            </p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'js/theme-toggle.js' %}"></script>
+{% endblock javascript %}

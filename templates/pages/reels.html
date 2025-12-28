@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block title %}Reels{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+
+<div class="space-y-8 max-w-md mx-auto">
+
+        <!-- CREATE REEL -->
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow p-4 mb-6">
+
+        <h2 class="text-lg font-semibold dark:text-dark-txt mb-4">
+            🎬 Publicar reel
+        </h2>
+
+        <form method="post"
+            action="{% url 'reels:create' %}"
+            enctype="multipart/form-data"
+            class="space-y-4">
+
+            {% csrf_token %}
+
+            <!-- VIDEO -->
+            <div>
+                <label class="block text-sm font-semibold mb-1 dark:text-dark-txt">
+                    Video
+                </label>
+                {{ form.video }}
+            </div>
+
+            <!-- CAPTION -->
+            <div>
+                <label class="block text-sm font-semibold mb-1 dark:text-dark-txt">
+                    Descripción
+                </label>
+                {{ form.caption }}
+            </div>
+
+            <!-- SUBMIT -->
+            <div class="text-right">
+                <button
+                    type="submit"
+                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                    Publicar
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    {% for reel in reels %}
+    <div class="bg-black rounded-xl overflow-hidden relative shadow">
+
+        <!-- VIDEO -->
+        <video
+            class="w-full h-[520px] object-cover"
+            controls
+            muted
+            loop
+            preload="metadata">
+            <source src="{{ reel.video.url }}" type="video/mp4">
+        </video>
+
+        <!-- USER INFO -->
+        <div class="absolute bottom-20 left-4 flex items-center gap-2 text-white">
+            <img
+                src="{% static 'img/user_placeholder.png' %}"
+                class="w-10 h-10 rounded-full border-2 border-white"
+                alt="">
+            <div>
+                <p class="font-semibold">@{{ reel.author.username }}</p>
+                <p class="text-xs text-gray-300">
+                    {{ reel.created_at|naturaltime }}
+                </p>
+            </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="absolute bottom-4 right-4 flex flex-col gap-4 text-white text-2xl">
+
+            <button class="hover:text-blue-400 transition">
+                <i class='bx bxs-like'></i>
+                <span class="text-xs block text-center">
+                    {{ reel.likes }}
+                </span>
+            </button>
+
+            <button class="hover:text-green-400 transition">
+                <i class='bx bxs-comment'></i>
+            </button>
+
+            <button class="hover:text-purple-400 transition">
+                <i class='bx bx-share'></i>
+            </button>
+
+        </div>
+
+        {% if reel.caption %}
+        <div class="absolute bottom-4 left-4 right-20 text-white text-sm">
+            {{ reel.caption }}
+        </div>
+        {% endif %}
+
+    </div>
+    {% empty %}
+        <p class="text-center text-gray-400 mt-12">
+            Todavía no hay reels publicados.
+        </p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/theme-toggle.js' %}"></script>
+{% endblock %}
