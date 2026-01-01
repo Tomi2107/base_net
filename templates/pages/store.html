@@ -100,11 +100,11 @@
             {% if item.image %}
                 <img src="{{ item.image.url }}"
                      alt="{{ item.title }}"
-                     class="w-full h-full object-cover">
+                     class="w-full max-w-md h-auto object-contain rounded">
             {% else %}
                 <img src="{% static 'img/placeholder-store.jpg' %}"
                      alt="Item"
-                     class="w-full h-full object-cover">
+                     class="w-full max-w-md h-auto object-contain rounded">
             {% endif %}
         </div>
 

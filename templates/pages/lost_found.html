@@ -161,10 +161,10 @@
                     <div class="h-52 bg-gray-200 dark:bg-dark-third">
                         {% if post.images.first %}
                             <img src="{{ post.images.first.image.url }}"
-                                 class="w-full h-full object-cover" alt="">
+                                 class="w-full max-w-md h-auto object-contain rounded" alt="">
                         {% else %}
                             <img src="{% static 'img/animal-placeholder.jpg' %}"
-                                 class="w-full h-full object-cover" alt="">
+                                 class="w-full max-w-md h-auto object-contain rounded" alt="">
                         {% endif %}
                     </div>
 

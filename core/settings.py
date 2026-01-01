@@ -35,9 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.humanize',
 
-    'tailwind',
-    'theme',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -64,11 +61,6 @@ INSTALLED_APPS = [
 ]
 
 SITE_ID = 1
-
-TAILWIND_APP_NAME = 'theme'
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
 CRISPY_TEMPLATE_PACK = "tailwind"
@@ -124,6 +116,11 @@ TEMPLATES = [
         },
     },
 ]
+
+TEMPLATES[0]['OPTIONS']['context_processors'] += [
+    'core.context_processors.user_pets',
+]
+
 
 WSGI_APPLICATION = 'core.wsgi.application'
 

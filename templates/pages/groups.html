@@ -111,11 +111,11 @@
                 <div class="w-20 h-20 flex-shrink-0">
                     {% if group.image %}
                         <img src="{{ group.image.url }}"
-                             class="w-full h-full object-cover rounded-lg"
+                             class="w-full max-w-md h-auto object-contain rounded"
                              alt="{{ group.name }}">
                     {% else %}
                         <img src="{% static 'img/placeholder-group.jpg' %}"
-                             class="w-full h-full object-cover rounded-lg"
+                             class="w-full max-w-md h-auto object-contain rounded"
                              alt="Grupo">
                     {% endif %}
                 </div>
