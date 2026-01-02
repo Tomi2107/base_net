@@ -26,7 +26,12 @@
 <div x-data="{ open: false }" class="px-4 mt-4 shadow rounded-lg bg-white dark:bg-dark-second">
 
     <div class="p-2 border-b border-gray-300 dark:border-dark-third flex space-x-4">
-        <a href="{% url 'users:profile' username=user.username %}">
+    {% if request.user.username %}
+        <a href="{% url 'users:profile' username=request.user.username %}">
+    {% else %}
+        <a href="{% url 'account_login' %}">
+    {% endif %}
+
         <img src="{{user.profile.picture.url}}" alt="Profile picture" class="w-full max-w-md h-auto object-contain rounded">
         </a>
         <button @click="open = true" type="button" class="transition duration-500 ease-in-out transform hover:-translate-y-1 flex-1 bg-gray-100 rounded-full flex items-center justify-start pl-4 cursor-pointer dark:bg-dark-third text-gray-500 text-lg dark:text-dark-txt">
