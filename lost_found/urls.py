@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import LostFoundFeedView
+from . import views
 
 app_name = "lost_found"
 
 urlpatterns = [
-    path("", LostFoundFeedView.as_view(), name="feed"),
+    path("", views.feed, name="feed"),
 ]

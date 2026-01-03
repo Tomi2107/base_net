@@ -72,7 +72,7 @@ class LostFoundPost(models.Model):
 
     description = models.TextField()
 
-    created_at = models.DateTimeField(
+    created = models.DateTimeField(
         auto_now_add=True
     )
 

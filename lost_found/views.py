@@ -1,67 +1,48 @@
-from django.views.generic import ListView
-from django.shortcuts import redirect
-from .models import LostFoundPost, LostFoundImage
+from django.shortcuts import render, redirect
+from .models import LostFoundPost
 from .forms import LostFoundForm
 
-class LostFoundFeedView(ListView):
-    model = LostFoundPost
-    template_name = "pages/lost_found.html"
-    context_object_name = "posts"
-    paginate_by = 20
+def feed(request):
+    posts = LostFoundPost.objects.all().order_by("-created")
 
-    def get_queryset(self):
-        qs = LostFoundPost.objects.all().order_by("-created_at")
-
-        # 🔍 FILTROS (GET)
-        if self.request.GET.get("status"):
-            qs = qs.filter(status=self.request.GET["status"])
-
-        if self.request.GET.get("animal_type"):
-            qs = qs.filter(animal_type=self.request.GET["animal_type"])
-
-        if self.request.GET.get("size"):
-            qs = qs.filter(size=self.request.GET["size"])
-
-        if self.request.GET.get("color"):
-            qs = qs.filter(color__icontains=self.request.GET["color"])
-
-        if self.request.GET.get("pattern"):
-            qs = qs.filter(pattern=self.request.GET["pattern"])
-
-        if self.request.GET.get("place"):
-            qs = qs.filter(place__icontains=self.request.GET["place"])
-
-        return qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        # Form en modo búsqueda (GET)
-        context["form"] = LostFoundForm(
-            self.request.GET or None,
+    # ---------- SEARCH (GET) ----------
+    if request.method == "GET":
+        form = LostFoundForm(
+            request.GET or None,
             search_mode=True
         )
 
-        return context
+        if form.is_valid():
+            data = form.cleaned_data
 
-    def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect("login")
+            if data.get("status"):
+                posts = posts.filter(status=data["status"])
+            if data.get("animal_type"):
+                posts = posts.filter(animal_type=data["animal_type"])
+            if data.get("size"):
+                posts = posts.filter(size=data["size"])
+            if data.get("color"):
+                posts = posts.filter(color__icontains=data["color"])
+            if data.get("pattern"):
+                posts = posts.filter(pattern=data["pattern"])
+            if data.get("place"):
+                posts = posts.filter(place__icontains=data["place"])
 
+    # ---------- CREATE (POST) ----------
+    else:
         form = LostFoundForm(request.POST, request.FILES)
 
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user   # 🔥 CAMPO CORRECTO
+            post.author = request.user
             post.save()
 
-            for image in request.FILES.getlist("images")[:3]:
-                LostFoundImage.objects.create(
-                    post=post,
-                    image=image
-                )
-        else:
-            print(form.errors)  # 👈 DEBUG REAL
+            for img in request.FILES.getlist("images")[:3]:
+                post.images.create(image=img)
 
-        return redirect("lost_found:feed")
+            return redirect("lost_found:feed")
 
+    return render(request, "pages/lost_found.html", {
+        "form": form,
+        "posts": posts
+    })
