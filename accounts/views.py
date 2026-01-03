@@ -13,6 +13,9 @@ from django.http import HttpResponse
 from pets.models import Pet
 from pets.forms import PetForm
 
+from foster.models import FosterAvailability
+from foster.forms import FosterAvailabilityForm
+
 
 @login_required
 def UserProfileView(request, username):
@@ -55,13 +58,16 @@ def EditProfile(request):
     profile = Profile.objects.get(user__id=user)
     user_basic_info = User.objects.get(id=user)
 
-    # ✅ NUEVO
     pets = Pet.objects.filter(owner=request.user)
     pet_form = PetForm()
 
+    # 🔹 Foster availability (get or none)
+    foster_instance = FosterAvailability.objects.filter(user=request.user).first()
+    foster_form = FosterAvailabilityForm(instance=foster_instance)
+
     if request.method == 'POST':
 
-        # ✅ NUEVO: alta de mascota
+        # ✅ alta mascota (NO SE TOCA)
         if 'add_pet' in request.POST:
             pet_form = PetForm(request.POST)
             if pet_form.is_valid():
@@ -70,7 +76,20 @@ def EditProfile(request):
                 pet.save()
                 return redirect('users:edit-profile')
 
-        # 🔴 LO EXISTENTE (NO SE TOCA)
+        # ✅ NUEVO: Foster form
+        if 'save_foster' in request.POST:
+            foster_form = FosterAvailabilityForm(
+                request.POST,
+                instance=foster_instance
+            )
+            if foster_form.is_valid():
+                foster = foster_form.save(commit=False)
+                foster.user = request.user
+                foster.is_active = True
+                foster.save()
+                return redirect('users:edit-profile')
+
+        # 🔴 perfil (NO SE TOCA)
         form = EditProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             user_basic_info.first_name = form.cleaned_data.get('first_name')
@@ -86,17 +105,19 @@ def EditProfile(request):
             profile.save()
             user_basic_info.save()
             return redirect('users:profile', username=request.user.username)
+
     else:
         form = EditProfileForm(instance=profile)
 
-    # ✅ CONTEXTO: SOLO AGREGAR
     context = {
         'form': form,
         'pets': pets,
         'pet_form': pet_form,
+        'foster_form': foster_form,   # ✅ NUEVO
     }
 
     return render(request, 'users/edit.html', context)
+
 
 
 class AddFollower(LoginRequiredMixin, View):
@@ -134,3 +155,5 @@ class ListFollowers(View):
         }
 
         return render(request, 'pages/social/followers_list.html', context)
+    
+    

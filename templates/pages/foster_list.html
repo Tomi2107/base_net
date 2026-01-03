@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Grupos{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+{% block content %}
+<div class="pt-24 max-w-6xl mx-auto px-4">
+
+    <h1 class="text-xl font-bold mb-6 dark:text-dark-txt">
+        🏠 Personas disponibles para tránsito
+    </h1>
+
+    <!-- BUSCADOR -->
+    <form method="get"
+          class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+
+        <select name="animal_type">
+            <option value="">Animal</option>
+            <option value="dog">Perro</option>
+            <option value="cat">Gato</option>
+            <option value="other">Otro</option>
+        </select>
+
+        <select name="health_condition">
+            <option value="">Salud</option>
+            <option value="healthy">Sano</option>
+            <option value="injured">Herido</option>
+            <option value="sick">Enfermo</option>
+        </select>
+
+        <input type="text"
+               name="notes"
+               placeholder="Espacio, experiencia, patio…"
+               class="rounded border px-3 py-2">
+
+        <button type="submit"
+                class="rounded bg-gray-200 px-4 py-2">
+            Buscar
+        </button>
+    </form>
+
+    <!-- LISTA -->
+    {% if fosters %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {% for foster in fosters %}
+                <div class="p-4 bg-white dark:bg-dark-second rounded shadow">
+
+                    <p class="font-semibold dark:text-dark-txt">
+                        {{ foster.user.username }}
+                    </p>
+
+                    <p class="text-sm text-gray-500">
+                        {{ foster.get_animal_type_display }} ·
+                        {{ foster.get_health_condition_display }}
+                    </p>
+
+                    {% if foster.notes %}
+                        <p class="text-sm mt-2 dark:text-dark-txt">
+                            {{ foster.notes|truncatechars:120 }}
+                        </p>
+                    {% endif %}
+
+                    <div class="mt-3 text-xs text-green-600">
+                        🟢 Tránsito activo
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-gray-500">
+            No hay personas disponibles por ahora.
+        </p>
+    {% endif %}
+</div>
+
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="{% static 'js/theme-toggle.js' %}"></script>
+{% endblock javascript %}

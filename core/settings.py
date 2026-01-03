@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'groups',
 
     'pets',
+    
+    "foster",
 ]
 
 SITE_ID = 1

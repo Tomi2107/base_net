@@ -126,6 +126,67 @@
 
     </section>
 
+    <!-- ================= TRÁNSITO ================= -->
+     <!-- ================= TRÁNSITO ================= -->
+<section id="foster-form" class="mt-12 scroll-mt-24">
+
+    <h3 class="text-lg font-semibold dark:text-dark-txt mb-4">
+            🏠 Disponibilidad para tránsito
+    </h3>
+
+        {% if user.foster_availability.is_active %}
+            <div class="mb-4 p-3 rounded bg-green-100 text-green-800">
+                ✅ Tránsito habilitado
+            </div>
+        {% endif %}
+
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+           
+            <div>
+                <label for="{{ foster_form.is_adult.id_for_label }}">
+                    {{ foster_form.is_adult.label }}
+                </label>
+                {{ foster_form.is_adult }}
+            </div>
+
+            <div>
+                <label for="{{ foster_form.animal_type.id_for_label }}">
+                    Tipo de animal
+                </label>
+                {{ foster_form.animal_type }}
+            </div>
+
+            <div>
+                <label for="{{ foster_form.animal_other.id_for_label }}">
+                    Otro animal
+                </label>
+                {{ foster_form.animal_other }}
+            </div>
+
+            <div>
+                <label for="{{ foster_form.health_condition.id_for_label }}">
+                    Estado de salud
+                </label>
+                {{ foster_form.health_condition }}
+            </div>
+
+            <div>
+                <label for="{{ foster_form.notes.id_for_label }}">
+                    Notas
+                </label>
+                {{ foster_form.notes }}
+            </div>
+
+            <button type="submit"
+                    name="save_foster"
+                    class="px-4 py-2 rounded bg-blue-600 text-white">
+                🟢 Habilitar tránsito
+            </button>
+        </form>
+
+    </section>
+ 
 </div>
 
 {% endblock content %}

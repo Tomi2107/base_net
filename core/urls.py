@@ -33,6 +33,8 @@ urlpatterns = [
     path("groups/", include("groups.urls", namespace="groups")),
     
     path('pets/', include('pets.urls')),  # 👈 ESTO
+    
+    path("foster/", include("foster.urls")),
 
 
 
