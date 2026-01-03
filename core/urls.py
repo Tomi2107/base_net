@@ -18,7 +18,7 @@ urlpatterns = [
 
 
     path('dashboard/', HomeView.as_view(), name="home"),
-    path('dashboard/', LandingPageView.as_view(), name='landing'),  # Home externo público
+    path('', LandingPageView.as_view(), name='landing'),  # Home externo público
     path("lost-found/", include("lost_found.urls", namespace="lost_found")),
     path("parroquiales/", include("parroquiales.urls", namespace="parroquiales")),
     path('settings/', AccountSettingsView.as_view(), name='account_settings'),
