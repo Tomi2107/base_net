@@ -14,6 +14,7 @@ class FosterAvailability(models.Model):
         ("healthy", "Sano"),
         ("injured", "Herido"),
         ("sick", "Enfermo"),
+        ("Quelquechose", "sin preferencias"),
     ]
 
     user = models.OneToOneField(
