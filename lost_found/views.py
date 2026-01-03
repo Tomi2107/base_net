@@ -45,11 +45,14 @@ class LostFoundFeedView(ListView):
         return context
 
     def post(self, request, *args, **kwargs):
-        form = LostFoundForm(request.POST)
+        if not request.user.is_authenticated:
+            return redirect("login")
+
+        form = LostFoundForm(request.POST, request.FILES)
 
         if form.is_valid():
             post = form.save(commit=False)
-            post.user = request.user
+            post.author = request.user   # 🔥 CAMPO CORRECTO
             post.save()
 
             for image in request.FILES.getlist("images")[:3]:
@@ -57,5 +60,8 @@ class LostFoundFeedView(ListView):
                     post=post,
                     image=image
                 )
+        else:
+            print(form.errors)  # 👈 DEBUG REAL
 
         return redirect("lost_found:feed")
+

@@ -23,34 +23,54 @@
 
         <!-- CREATE POST FORM -->
         <form method="post"
-              action="{% url 'lost_found:feed' %}
-              "
-              enctype="multipart/form-data"
-              class="space-y-5">
+            action="{% url 'lost_found:feed' %}"
+            enctype="multipart/form-data"
+            class="space-y-5">
 
             {% csrf_token %}
 
-            <!-- STATUS -->
-            <div>
-                <label class="block text-sm font-semibold mb-2 dark:text-dark-txt">
-                    Estado del animal
-                </label>
+        <!-- STATUS -->
+        <div>
+            <span class="block text-sm font-semibold mb-2 dark:text-dark-txt">
+                Estado del animal
+            </span>
 
-                {% if form.status.errors %}
-                    <p class="text-sm text-red-500 mb-2">
-                        {{ form.status.errors.0 }}
-                    </p>
-                {% endif %}
+            {% if form.status.errors %}
+                <p class="text-sm text-red-500 mb-2">
+                    {{ form.status.errors.0 }}
+                </p>
+            {% endif %}
 
-                <div class="flex gap-6">
-                    {% for radio in form.status %}
-                        <label class="flex items-center gap-2 text-sm dark:text-dark-txt cursor-pointer">
-                            {{ radio.tag }}
-                            <span>{{ radio.choice_label }}</span>
-                        </label>
-                    {% endfor %}
-                </div>
+            <div class="flex rounded-lg border overflow-hidden w-fit">
+
+                {% for radio in form.status %}
+                    <label
+                        class="px-5 py-2 text-sm cursor-pointer transition
+                            dark:text-dark-txt
+                            bg-white dark:bg-dark-third
+                            hover:bg-gray-100 dark:hover:bg-dark-second"
+                    >
+                        <input
+                        type="radio"
+                        name="status"
+                        value="{{ radio.choice_value }}"
+                        class="accent-blue-500"
+                        {% if radio.choice_value == form.status.value %}checked{% endif %}
+                    >
+                        <span
+                            class="peer-checked:bg-blue-500
+                                peer-checked:text-white
+                                px-5 py-2 block rounded"
+                        >
+                            {{ radio.choice_label }}
+                        </span>
+                    </label>
+                {% endfor %}
+
             </div>
+        </div>
+
+
 
 
             <!-- MAIN FIELDS -->
@@ -58,7 +78,7 @@
 
                 <!-- ANIMAL -->
                 <div>
-                    <label class="text-sm font-semibold dark:text-dark-txt">
+                    <label for="{{ form.animal_type.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
                         Animal
                     </label>
                     {{ form.animal_type }}
@@ -66,7 +86,7 @@
 
                 <!-- OTHER ANIMAL -->
                 <div id="animal-other-wrapper" class="hidden">
-                    <label class="text-sm font-semibold dark:text-dark-txt">
+                    <label for="{{ form.animal.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
                         Especificar animal
                     </label>
                     {{ form.animal_other }}
@@ -74,7 +94,7 @@
 
                 <!-- SIZE -->
                 <div>
-                    <label class="text-sm font-semibold dark:text-dark-txt">
+                    <label for="{{ form.size.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
                         Tamaño
                     </label>
                     {{ form.size }}
@@ -82,7 +102,7 @@
 
                 <!-- COLOR -->
                 <div>
-                    <label class="text-sm font-semibold dark:text-dark-txt">
+                    <label for="{{ form.color.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
                         Color principal
                     </label>
                     {{ form.color }}
@@ -90,7 +110,7 @@
 
                 <!-- PATTERN -->
                 <div>
-                    <label class="text-sm font-semibold dark:text-dark-txt">
+                    <label for="{{ form.pattern.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
                         Patrón
                     </label>
                     {{ form.pattern }}
@@ -98,7 +118,7 @@
 
                 <!-- PLACE -->
                 <div>
-                    <label class="text-sm font-semibold dark:text-dark-txt">
+                    <label for="{{ form.place.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
                         Zona / lugar
                     </label>
                     {{ form.place }}
@@ -108,7 +128,7 @@
 
             <!-- DESCRIPTION -->
             <div>
-                <label class="text-sm font-semibold dark:text-dark-txt">
+                <label for="{{ form.description.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
                     Descripción
                 </label>
                 {{ form.description }}
@@ -116,9 +136,9 @@
 
             <!-- IMAGES -->
             <div>
-                <label class="text-sm font-semibold dark:text-dark-txt">
+                <legend class="text-sm font-semibold dark:text-dark-txt">
                     Imágenes
-                </label>
+                </legend>
                 <input type="file"
                        name="images"
                        multiple
@@ -133,8 +153,8 @@
         <div class="text-right pt-2">
             <div class="flex justify-end gap-3 pt-2">
             <button
-                type="submit"
-                formmethod="get"
+                type="button"
+                onclick="this.form.submit()"
                 class="px-6 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
                 Buscar
             </button>
@@ -171,7 +191,7 @@
                     <!-- BODY -->
                     <div class="p-4">
                         <p class="text-sm font-semibold dark:text-dark-txt">
-                            {{ post.get_status_display }} · {{ post.animal_type }}
+                            {{ post.get_status_display }} · {{ post.get_animal_type_display }}
                         </p>
 
                         <p class="text-xs text-gray-500 mt-1">
