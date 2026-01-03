@@ -103,16 +103,29 @@
         </h3>
 
         {% for pet in pets %}
-            <div class="p-3 mb-2 bg-gray-100 dark:bg-dark-third rounded">
+        <div class="p-3 mb-2 bg-gray-100 dark:bg-dark-third rounded flex justify-between items-center">
+            <div>
                 <strong>{{ pet.name }}</strong> – {{ pet.get_species_display }}
                 <div class="text-sm text-gray-500">
                     {{ pet.breed }} · {{ pet.color }} · {{ pet.get_size_display }}
                 </div>
             </div>
-        {% empty %}
-            <p class="text-sm text-gray-500">No cargaste mascotas todavía</p>
-        {% endfor %}
 
+            <div class="flex gap-2">
+                <a href="{% url 'pets:edit-pet' pet.id %}"
+                class="px-2 py-1 text-sm rounded bg-blue-500 text-white">
+                    Editar
+                </a>
+
+                <a href="{% url 'pets:delete-pet' pet.id %}"
+                class="px-2 py-1 text-sm rounded bg-red-500 text-white">
+                    Eliminar
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-sm text-gray-500">No cargaste mascotas todavía</p>
+        {% endfor %}
         <form method="post" class="mt-6">
             {% csrf_token %}
             {{ pet_form|crispy }}
@@ -124,9 +137,9 @@
             </button>
         </form>
 
+
     </section>
 
-    <!-- ================= TRÁNSITO ================= -->
      <!-- ================= TRÁNSITO ================= -->
 <section id="foster-form" class="mt-12 scroll-mt-24">
 
