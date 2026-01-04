@@ -10,6 +10,16 @@
 {% include 'components/navbar.html' %}
 {% endblock navbar %}
 
+ {% block content %}
+ <div class="flex items-center mb-3">
+                <img
+                    src="{% static 'img/mascotas.png' %}"
+                    class="w-full max-w-md h-auto object-contain rounded"
+                    alt="mascotas">
+</div>
+{% endblock content %}
+
+
 <!-- footer -->
  {% block footer %}
  {% include 'components/footer.html' %}
