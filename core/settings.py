@@ -130,7 +130,7 @@ DATABASES = { 'default': { 'ENGINE': 'django.db.backends.mysql', 'NAME': 'mascot
 
 # DATABASES = {
 #     "default": env.db("DATABASE_URL", default="//postgres:1@127.0.0.1:5432/social"),
-}
+# }
 
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
