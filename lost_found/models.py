@@ -29,7 +29,7 @@ class LostFoundPost(models.Model):
         ("manchas", "Manchas"),
         ("rayas", "Rayas"),
     ]
-
+    
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -94,3 +94,4 @@ class LostFoundImage(models.Model):
 
     def __str__(self):
         return f"Imagen de post #{self.post.id}"
+

@@ -53,8 +53,8 @@
 
     {% for pet in pets %}
     <div class="space-y-2">
-
-        <a href="#"
+        {% if pet.status != "lost" %}
+        <a href="{% url 'pets:pet-lost' pet.id %}"
            class="flex items-center space-x-2 p-2 rounded-lg
                   bg-red-100 hover:bg-red-200 text-red-600 font-semibold transition"
            data-pet-id="{{ pet.id }}">
@@ -62,15 +62,25 @@
             <i class='bx bxs-dog'></i>
             <span>Se perdió {{ pet.name }}</span>
         </a>
-
-        <a href="#"
-           class="flex items-center space-x-2 p-2 rounded-lg
-                  bg-pink-100 hover:bg-pink-200 text-pink-600 font-semibold transition"
-           data-pet-id="{{ pet.id }}">
-
-            <i class='bx bxs-heart'></i>
-            <span>{{ pet.name }} busca novia/o</span>
+        {% else %}
+        <a href="{% url 'pets:pet-normal' pet.id %}"
+           class="px-2 py-1 text-sm rounded bg-gray-300">
+            Quitar
         </a>
+        {% endif %}
+        {% if pet.status != "dating" %}
+        <a href="{% url 'pets:pet-dating' pet.id %}"
+           class="flex items-center gap-1 px-2 py-1 text-sm rounded
+                  bg-pink-100 hover:bg-pink-200 text-pink-600 font-semibold">
+            <i class='bx bxs-heart'></i>
+            Busca pareja
+        </a>
+        {% else %}
+        <a href="{% url 'pets:pet-normal' pet.id %}"
+           class="px-2 py-1 text-sm rounded bg-gray-300">
+            Quitar
+        </a>
+        {% endif %}
 
     </div>
     {% endfor %}

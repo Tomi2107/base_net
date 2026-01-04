@@ -34,7 +34,7 @@ urlpatterns = [
     
     path('pets/', include('pets.urls')),  # 👈 ESTO
     
-    path("foster/", include("foster.urls")),
+    path("foster/", include("foster.urls", namespace="foster" )),
 
 
 

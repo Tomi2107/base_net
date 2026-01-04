@@ -37,16 +37,24 @@ def UserProfileView(request, username):
 
     number_of_followers = len(followers)
 
-    # Cargar el template
-    template = loader.get_template('users/detail.html')
-
+    # ✅ NUEVO: mascotas perdidas
+    lost_pets = pets.filter(status="lost")
+    
+    dating_pets = pets.filter(status="dating")
     # Crear el contexto para pasar al template
     context = {
         'profile': profile,
         'number_of_followers': number_of_followers,
         'is_following': is_following,
         'pets':pets,
+        'lost_pets': lost_pets,
+        'dating_pets': dating_pets,
     }
+
+    
+
+    # Cargar el template
+    template = loader.get_template('users/detail.html')
 
     # Renderizar la respuesta
     return HttpResponse(template.render(context, request))

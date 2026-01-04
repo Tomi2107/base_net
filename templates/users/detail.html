@@ -31,6 +31,29 @@
                         <img class=" h-24 w-24 rounded-full ring-4 dark:ring-dark-second ring-white sm:h-32 sm:w-32 hover:bg-gray-100"
                         src="{{profile.picture.url}}" alt="{{profile.user.username}} Profile Picture">
                     </div>
+                    {% if lost_pets %}
+                      <div class="flex items-center justify-center gap-1 mt-1 text-sm text-red-600">
+                          <i class='bx bx-leash'></i>
+                          <span>
+                              Buscando a
+                              {% for pet in lost_pets %}
+                                  {{ pet.name }}{% if not forloop.last %}, {% endif %}
+                              {% endfor %}
+                          </span>
+                      </div>
+                  {% endif %}
+                     
+                  {% if dating_pets %}
+                    <div class="flex items-center justify-center gap-1 mt-1 text-sm text-pink-600">
+                        <i class='bx bxs-heart'></i>
+                        <span>
+                            {% for pet in dating_pets %}
+                                {{ pet.name }} busca pareja {% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </span>
+                    </div>
+                  {% endif %}
+
 
                     {% if user.is_authenticated and user != profile.user %}
                         {% if is_following %}

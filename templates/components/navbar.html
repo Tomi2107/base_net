@@ -24,9 +24,9 @@
 
         <!-- HOME -->
         <li class="w-1/5 md:w-max text-center">
-            <a href="{% url 'home' %}"
+            <a href="{% url 'foster:list' %}"
                class="w-full text-3xl py-2 px-4 xl:px-12 inline-block
-               {% if request.resolver_match.url_name == 'home' %}
+               {% if request.resolver_match.url_name == 'foster' %}
                    text-blue-500 border-b-4 border-blue-500
                {% else %}
                    text-gray-600 hover:bg-gray-100 dark:text-dark-txt dark:hover:bg-dark-third
@@ -98,12 +98,6 @@
                {% endif %}">
                 <i class='bx bx-plus-medical'></i>
             </a>
-        </li>
-        <li class="w-1/5 md:w-max text-center">
-     
-        <a href="{% url 'foster:list' %}">
-         🏠 
-        </a>
         </li>
 
         <!-- MENU -->

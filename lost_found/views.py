@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import LostFoundPost
 from .forms import LostFoundForm
 
+
 def feed(request):
     posts = LostFoundPost.objects.all().order_by("-created")
 

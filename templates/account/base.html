@@ -59,7 +59,8 @@
     </div>
     {% block content %}
     <h1>{{ profile_user.username }}'s Profile</h1>
-<img src="{{ user.profile.picture.url }}" alt="{{ user=user.username }}'s profile picture">
+    <img src="{{ user.profile.picture.url }}" alt="{{ user=user.username }}'s profile picture">
+     
     {% endblock %}
     {% endblock %}
     {% block extra_body %}
