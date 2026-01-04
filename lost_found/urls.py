@@ -5,4 +5,6 @@ app_name = "lost_found"
 
 urlpatterns = [
     path("", views.feed, name="feed"),
+    path('remove/<int:pet_id>/', views.remove_lost_post, name='remove_lost'),
+
 ]

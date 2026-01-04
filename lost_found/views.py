@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import LostFoundPost
 from .forms import LostFoundForm
-
+from pets.models import Pet
 
 def feed(request):
     posts = LostFoundPost.objects.all().order_by("-created")
@@ -47,3 +48,23 @@ def feed(request):
         "form": form,
         "posts": posts
     })
+
+@login_required
+def remove_lost_post(request, pet_id):
+    pet = get_object_or_404(
+        Pet,
+        id=pet_id,
+        owner=request.user
+    )
+
+    # borrar el post de lost_found del usuario
+    LostFoundPost.objects.filter(
+        author=request.user,
+        status="lost"
+    ).delete()
+
+    # devolver mascota a normal
+    pet.status = "normal"
+    pet.save()
+
+    return redirect("home")
