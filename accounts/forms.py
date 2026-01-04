@@ -1,5 +1,6 @@
 from accounts.models import Profile
 from django import forms
+from .models import UserOpinion
 
 
 
@@ -25,4 +26,19 @@ class EditProfileForm(forms.ModelForm):
         model = Profile
         fields = ('first_name','last_name','picture','banner','location','url','bio','birthday')
        
+
+
+
+class UserOpinionForm(forms.ModelForm):
+    class Meta:
+        model = UserOpinion
+        fields = ["rating", "comment", "is_anonymous"]
+        widgets = {
+            "rating": forms.RadioSelect(),
+            "comment": forms.Textarea(attrs={
+                "rows": 3,
+                "placeholder": "Dejá tu opinión…"
+            })
+        }
+        
         

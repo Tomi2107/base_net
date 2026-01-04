@@ -1,9 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, User
 from django.conf import settings
 import os
 from PIL import Image
 from django.db.models.signals import post_save
+
 # Create your models here.
 
 def user_directory_path_profile(instance, filename):
@@ -72,3 +73,32 @@ post_save.connect(create_user_profile, sender=User)
 # save created profile
 post_save.connect(save_user_profile, sender=User)
 
+class UserOpinion(models.Model):
+    profile = models.ForeignKey(
+        "accounts.Profile",
+        on_delete=models.CASCADE,
+        related_name="opinions",
+        null=True,   # 👈 TEMPORAL
+        blank=True
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="given_opinions"
+    )
+    rating = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)])
+    comment = models.TextField(blank=True)
+    is_anonymous = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["profile", "author"],
+                name="one_opinion_per_user_per_profile"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.author} → {self.profile}"

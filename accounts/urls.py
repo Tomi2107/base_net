@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import UserProfileView, EditProfile, AddFollower, RemoveFollower, ListFollowers
+from .views import UserProfileView, EditProfile, AddFollower, RemoveFollower, ListFollowers, delete_opinion
 
 app_name="accounts"
 
@@ -12,4 +12,6 @@ urlpatterns = [
 	path('profile/<int:pk>/followers/remove', RemoveFollower.as_view(), name='remove-follower'),
 
     path('profile/<int:pk>/followers/',ListFollowers.as_view(), name='followers-list'),
+    
+    path('opinion/delete/<int:opinion_id>/', delete_opinion, name='delete-opinion'),
 ]

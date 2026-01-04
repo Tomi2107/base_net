@@ -1,7 +1,7 @@
 from accounts.forms import EditProfileForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, View
-from accounts.models import Profile
+from accounts.models import Profile, UserOpinion
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 User = get_user_model()
@@ -9,6 +9,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template import loader
 from django.contrib import messages
 from django.http import HttpResponse
+from .forms import UserOpinionForm, UserOpinionForm
+
+from django.db.models import Avg
+from .models import UserOpinion
 
 from pets.models import Pet
 from pets.forms import PetForm
@@ -16,48 +20,70 @@ from pets.forms import PetForm
 from foster.models import FosterAvailability
 from foster.forms import FosterAvailabilityForm
 
+from math import floor
 
 @login_required
 def UserProfileView(request, username):
     user = get_object_or_404(User, username=username)
+    profile = get_object_or_404(Profile, user=user)
     pets = user.pets.all()
-    profile = Profile.objects.get(user=user)
-    
-    
+
     followers = profile.followers.all()
-    
-    # Inicializar la variable is_following antes del bucle
-    is_following = False
+    is_following = request.user in followers
+    number_of_followers = followers.count()
 
-    # Verificar si el usuario actual sigue al perfil
-    for follower in followers:
-        if follower == request.user:
-            is_following = True
-            break
-
-    number_of_followers = len(followers)
-
-    # ✅ NUEVO: mascotas perdidas
     lost_pets = pets.filter(status="lost")
-    
     dating_pets = pets.filter(status="dating")
-    # Crear el contexto para pasar al template
+
+    # ✅ OPINIONES (Profile, NO User)
+    opinions = UserOpinion.objects.filter(
+        profile=profile
+    ).order_by("-created")
+
+    has_opinions = opinions.exists()
+    average_rating = opinions.aggregate(avg=Avg("rating"))["avg"]
+    average_rating_int = int(round(average_rating)) if average_rating else 0
+
+    user_opinion = None
+    if request.user.is_authenticated and request.user != profile.user:
+        user_opinion = UserOpinion.objects.filter(
+            profile=profile,
+            author=request.user
+        ).first()
+
+    # 🔹 FORM
+    if request.method == "POST":
+        form = UserOpinionForm(
+            request.POST,
+            instance=user_opinion
+        )
+
+        if form.is_valid():
+            opinion = form.save(commit=False)
+            opinion.profile = profile
+            opinion.author = request.user
+            opinion.save()
+            return redirect("users:profile", username=profile.user.username)
+    else:
+        form = UserOpinionForm(instance=user_opinion)
+
     context = {
-        'profile': profile,
-        'number_of_followers': number_of_followers,
-        'is_following': is_following,
-        'pets':pets,
-        'lost_pets': lost_pets,
-        'dating_pets': dating_pets,
+        "profile": profile,
+        "pets": pets,
+        "lost_pets": lost_pets,
+        "dating_pets": dating_pets,
+        "number_of_followers": number_of_followers,
+        "is_following": is_following,
+        "opinions": opinions,
+        "average_rating": average_rating,
+        "average_rating_int": average_rating_int,
+        "has_opinions": has_opinions,
+        "form": form,
+        "user_opinion": user_opinion,
     }
 
-    
+    return render(request, "users/detail.html", context)
 
-    # Cargar el template
-    template = loader.get_template('users/detail.html')
-
-    # Renderizar la respuesta
-    return HttpResponse(template.render(context, request))
 
 
 @login_required
@@ -164,4 +190,36 @@ class ListFollowers(View):
 
         return render(request, 'pages/social/followers_list.html', context)
     
+@login_required
+def add_opinion(request, username):
+    profile = get_object_or_404(User, username=username)
+
+    if request.method == "POST":
+        form = UserOpinionForm(request.POST)
+        if form.is_valid():
+            opinion = form.save(commit=False)
+            opinion.author = request.user
+            opinion.profile = profile
+            opinion.save()
+            return redirect("users:profile", username=username)
+    else:
+        form = UserOpinionForm()
+
+    return render(request, "users/opinion_form.html", {
+        "form": form,
+        "profile": profile
+    })
+    
+@login_required
+def delete_opinion(request, opinion_id):
+    opinion = get_object_or_404(
+        UserOpinion,
+        id=opinion_id,
+        author=request.user
+    )
+
+    profile_username = opinion.profile.user.username
+    opinion.delete()
+
+    return redirect("users:profile", username=profile_username)
     
