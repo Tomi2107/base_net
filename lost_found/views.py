@@ -57,13 +57,17 @@ def remove_lost_post(request, pet_id):
         owner=request.user
     )
 
-    # borrar el post de lost_found del usuario
-    LostFoundPost.objects.filter(
-        author=request.user,
-        status="lost"
-    ).delete()
+    # borrar SOLO el último post "lost" del usuario
+    post = (
+        LostFoundPost.objects
+        .filter(author=request.user, status="lost")
+        .order_by("-created")
+        .first()
+    )
 
-    # devolver mascota a normal
+    if post:
+        post.delete()
+
     pet.status = "normal"
     pet.save()
 
