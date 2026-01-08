@@ -1,0 +1,56 @@
+{% extends 'users/base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+{% block content %}
+
+<!-- search/results.html -->
+<h1 class="text-xl font-bold mb-4">
+    Results for "{{ query }}"
+</h1>
+
+<section class="mb-6">
+    <h2 class="font-semibold mb-2">Users</h2>
+
+    {% for profile in users %}
+        <div class="p-2 border-b">
+            <a href="{% url 'users:profile' profile.user.username %}">
+                {{ profile.user.username }}
+            </a>
+        </div>
+        <a href="{% url 'friends:send' profile.user.id %}"
+        class="px-4 py-2 bg-blue-500 text-white rounded">
+            Add friend
+        </a>
+    {% empty %}
+        <p class="text-sm opacity-60">No users found</p>
+    {% endfor %}
+</section>
+
+<section>
+    <h2 class="font-semibold mb-2">Posts</h2>
+
+    {% for post in posts %}
+        <div class="p-2 border-b">
+            {{ post.content|truncatechars:120 }}
+        </div>
+    {% empty %}
+        <p class="text-sm opacity-60">No posts found</p>
+    {% endfor %}
+</section>
+
+
+{% endblock content %}

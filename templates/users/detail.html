@@ -31,6 +31,35 @@
                         <img class=" h-24 w-24 rounded-full ring-4 dark:ring-dark-second ring-white sm:h-32 sm:w-32 hover:bg-gray-100"
                         src="{{profile.picture.url}}" alt="{{profile.user.username}} Profile Picture">
                     </div>
+                    <!-- Friend zone status -->
+                    {% if friendship_status == "none" %}
+                          <a href="{% url 'friends:send' profile_user.id %}"
+                            class="px-4 py-2 bg-blue-500 text-white rounded">
+                              Add friend
+                          </a>
+
+                      {% elif friendship_status == "sent" %}
+                          <span class="px-4 py-2 bg-gray-400 text-white rounded">
+                              Sent
+                          </span>
+
+                      {% elif friendship_status == "received" %}
+                          <a href="{% url 'friends:accept' profile_user.id %}"
+                            class="px-4 py-2 bg-green-500 text-white rounded">
+                              Accept
+                          </a>
+                          <a href="{% url 'friends:reject' profile_user.id %}"
+                            class="px-4 py-2 bg-red-500 text-white rounded ml-2">
+                              Reject
+                          </a>
+
+                      {% elif friendship_status == "friends" %}
+                          <a href="{% url 'friends:remove' profile_user.id %}"
+                            class="px-4 py-2 bg-red-500 text-white rounded">
+                              Remove friend
+                          </a>
+                      {% endif %}
+
                     {% if has_opinions %}
                     <div class="flex items-center gap-1 mt-1 text-yellow-400 text-sm">
                         {% for i in "12345" %}

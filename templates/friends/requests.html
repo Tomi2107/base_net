@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+{% block content %}
+
+<h1>Friend requests</h1>
+
+{% for req in requests %}
+  <div class="flex justify-between">
+      <span>{{ req.from_user.username }}</span>
+
+      <div>
+          <a href="{% url 'friends:accept' req.id %}">Accept</a>
+          <a href="{% url 'friends:reject' req.id %}">Reject</a>
+      </div>
+  </div>
+{% empty %}
+  <p>No pending requests</p>
+{% endfor %}
+
+
+{% endblock content %}

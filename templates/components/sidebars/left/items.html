@@ -31,14 +31,14 @@
 
     <!-- FRIENDS (FUTURO) -->
     <li>
-        <a href="#"
-           class="flex items-center space-x-3 p-2 rounded-lg
-                  opacity-60 cursor-not-allowed
-                  dark:text-dark-txt">
+        <a href="{% url 'friends:list' %}"
+        class="flex items-center space-x-3 p-2 rounded-lg
+                hover:bg-gray-100 dark:text-dark-txt">
             <i class='bx bx-group text-xl'></i>
-            <span class="font-semibold">Friends (soon)</span>
+            <span class="font-semibold">Friends</span>
         </a>
     </li>
+
 
     <!-- SEE MORE -->
     <li x-data="{ open: false }">

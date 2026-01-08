@@ -21,12 +21,16 @@ from foster.models import FosterAvailability
 from foster.forms import FosterAvailabilityForm
 
 from math import floor
+from friends.utils import get_friendship_status
 
 @login_required
 def UserProfileView(request, username):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=user)
     pets = user.pets.all()
+
+    # 🔹 FRIENDSHIP STATUS (🔥 ESTO FALTABA)
+    friendship_status = get_friendship_status(request.user, user)
 
     followers = profile.followers.all()
     is_following = request.user in followers
@@ -35,7 +39,6 @@ def UserProfileView(request, username):
     lost_pets = pets.filter(status="lost")
     dating_pets = pets.filter(status="dating")
 
-    # ✅ OPINIONES (Profile, NO User)
     opinions = UserOpinion.objects.filter(
         profile=profile
     ).order_by("-created")
@@ -45,19 +48,17 @@ def UserProfileView(request, username):
     average_rating_int = int(round(average_rating)) if average_rating else 0
 
     user_opinion = None
-    if request.user.is_authenticated and request.user != profile.user:
+    if request.user != profile.user:
         user_opinion = UserOpinion.objects.filter(
             profile=profile,
             author=request.user
         ).first()
 
-    # 🔹 FORM
     if request.method == "POST":
         form = UserOpinionForm(
             request.POST,
             instance=user_opinion
         )
-
         if form.is_valid():
             opinion = form.save(commit=False)
             opinion.profile = profile
@@ -69,6 +70,7 @@ def UserProfileView(request, username):
 
     context = {
         "profile": profile,
+        "profile_user": user,          # ✅ para consistencia
         "pets": pets,
         "lost_pets": lost_pets,
         "dating_pets": dating_pets,
@@ -80,9 +82,13 @@ def UserProfileView(request, username):
         "has_opinions": has_opinions,
         "form": form,
         "user_opinion": user_opinion,
+
+        # 🔥 AHORA SÍ
+        "friendship_status": friendship_status,
     }
 
     return render(request, "users/detail.html", context)
+
 
 
 

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+    {% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+    {% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+{% block content %}
+
+<div class="bg-white dark:bg-dark-second shadow rounded-lg p-5">
+
+    <h1 class="text-xl font-bold mb-4 dark:text-dark-txt">
+        Friends
+    </h1>
+
+    {% if friendships %}
+        <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+
+            {% for f in friendships %}
+                <li class="bg-gray-50 dark:bg-dark-third rounded-lg shadow p-4 text-center">
+
+                    {% if f.user1 == request.user %}
+                        {% with friend=f.user2 %}
+
+                            <img
+                                src="{{ friend.profile.picture.url|default:'/static/img/user_placeholder.png' }}"
+                                class="w-20 h-20 mx-auto rounded-full object-cover mb-3"
+                                alt="{{ friend.username }}"
+                            >
+
+                            <p class="font-semibold dark:text-dark-txt">
+                                {{ friend.username }}
+                            </p>
+
+                            <a
+                                href="{% url 'users:profile' username=friend.username %}"
+                                class="inline-block mt-3 text-sm px-4 py-1 rounded
+                                       bg-blue-500 hover:bg-blue-600 text-white transition"
+                            >
+                                View profile
+                            </a>
+
+                        {% endwith %}
+                    {% else %}
+                        {% with friend=f.user1 %}
+
+                            <img
+                                src="{{ friend.profile.picture.url|default:'/static/img/user_placeholder.png' }}"
+                                class="w-20 h-20 mx-auto rounded-full object-cover mb-3"
+                                alt="{{ friend.username }}"
+                            >
+
+                            <p class="font-semibold dark:text-dark-txt">
+                                {{ friend.username }}
+                            </p>
+
+                            <a
+                                href="{% url 'users:profile' username=friend.username %}"
+                                class="inline-block mt-3 text-sm px-4 py-1 rounded
+                                       bg-blue-500 hover:bg-blue-600 text-white transition"
+                            >
+                                View profile
+                            </a>
+
+                        {% endwith %}
+                    {% endif %}
+
+                </li>
+            {% endfor %}
+
+        </ul>
+    {% else %}
+        <p class="text-gray-500 dark:text-dark-txt">
+            You don’t have friends yet.
+        </p>
+    {% endif %}
+
+</div>
+
+{% endblock content %}

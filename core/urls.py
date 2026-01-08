@@ -35,9 +35,12 @@ urlpatterns = [
     path('pets/', include('pets.urls')),  # 👈 ESTO
     
     path("foster/", include("foster.urls", namespace="foster" )),
-
-
-
+    
+    path('friends/', include('friends.urls')),
+    
+    path('search/', include('search.urls')),
+    
+    path("notifications/", include("notifications.urls")),
 ]
 
 if settings.DEBUG:

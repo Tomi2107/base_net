@@ -25,7 +25,8 @@
     <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
      <!-- Carga del CSS de Tailwind desde el theme -->
      <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    
+        <!-- Favicon icon-->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon2.png' %}">
 
     <title>{% block head_title %}{% endblock %}</title>
     {% block extra_head %}
@@ -60,7 +61,35 @@
     {% block content %}
     <h1>{{ profile_user.username }}'s Profile</h1>
     <img src="{{ user.profile.picture.url }}" alt="{{ user=user.username }}'s profile picture">
-     
+    <!-- Friend zone status -->
+                    {% if friendship_status == "none" %}
+                          <a href="{% url 'friends:send' profile_user.id %}"
+                            class="px-4 py-2 bg-blue-500 text-white rounded">
+                              Add friend
+                          </a>
+
+                      {% elif friendship_status == "sent" %}
+                          <span class="px-4 py-2 bg-gray-400 text-white rounded">
+                              Request sent
+                          </span>
+
+                      {% elif friendship_status == "received" %}
+                          <a href="{% url 'friends:accept' profile_user.id %}"
+                            class="px-4 py-2 bg-green-500 text-white rounded">
+                              Accept
+                          </a>
+                          <a href="{% url 'friends:reject' profile_user.id %}"
+                            class="px-4 py-2 bg-red-500 text-white rounded ml-2">
+                              Reject
+                          </a>
+
+                      {% elif friendship_status == "friends" %}
+                          <a href="{% url 'friends:remove' profile_user.id %}"
+                            class="px-4 py-2 bg-red-500 text-white rounded">
+                              Remove friend
+                          </a>
+                      {% endif %}
+
     {% endblock %}
     {% endblock %}
     {% block extra_body %}

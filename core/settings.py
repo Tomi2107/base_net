@@ -60,6 +60,12 @@ INSTALLED_APPS = [
     'pets',
     
     "foster",
+    
+    "friends",
+    
+    "search",
+    
+    "notifications",
 ]
 
 SITE_ID = 1
@@ -114,23 +120,23 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notifications.context_processors.notifications_count',
+                'pets.context_processors.user_pets',
             ],
         },
     },
 ]
 
-TEMPLATES[0]['OPTIONS']['context_processors'] += [
-    'core.context_processors.user_pets',
-]
+
 
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-DATABASES = { 'default': { 'ENGINE': 'django.db.backends.mysql', 'NAME': 'mascotas25$default', 'USER': 'mascotas25', 'PASSWORD': '_$SgS$X6w2uPkPz', 'HOST': 'mascotas25.mysql.pythonanywhere-services.com', 'PORT': '3306', 'OPTIONS': { 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'", }, } }
+# DATABASES = { 'default': { 'ENGINE': 'django.db.backends.mysql', 'NAME': 'mascotas25$default', 'USER': 'mascotas25', 'PASSWORD': '_$SgS$X6w2uPkPz', 'HOST': 'mascotas25.mysql.pythonanywhere-services.com', 'PORT': '3306', 'OPTIONS': { 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'", }, } }
 
-# DATABASES = {
-#     "default": env.db("DATABASE_URL", default="//postgres:1@127.0.0.1:5432/social"),
-# }
+DATABASES = {
+    "default": env.db("DATABASE_URL", default="//postgres:1@127.0.0.1:5432/social"),
+}
 
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
