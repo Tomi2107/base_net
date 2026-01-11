@@ -1,0 +1,39 @@
+
+{% load static %}
+<div class="bg-white dark:bg-dark-second rounded-lg shadow overflow-hidden">
+
+    <div class="h-52 bg-gray-200 dark:bg-dark-third">
+        {% if post.images.first %}
+            <img src="{{ post.images.first.image.url }}"
+                    class="w-full h-full object-contain" alt="">
+        {% else %}
+            <img src="{% static 'img/animal-placeholder.jpg' %}"
+                    class="w-full h-full object-contain" alt="">
+        {% endif %}
+        
+    </div>
+    
+
+    <div class="p-4">
+        <p class="text-sm font-semibold dark:text-dark-txt">
+            {{ post.get_status_display }} · {{ post.get_animal_type_display }}
+        </p>
+        <p class="text-xs text-gray-500">
+            {{ post.place }}
+        </p>
+        <p class="text-sm dark:text-dark-txt mt-2 line-clamp-3">
+            {{ post.description }}
+        </p>
+        {% if request.user != post.author %}
+            {% include "components/messages/start_chat_button.html" with target_user=post.author %}
+        {% endif %}
+    </div>
+                         <!-- MENU -->
+                {% with item=post %}
+                <div class="flex justify-end p-2">
+                    {% include "components/menus/store_item_menu.html" with target_user=item %}
+                </div>
+                {% endwith %}
+
+</div>
+          

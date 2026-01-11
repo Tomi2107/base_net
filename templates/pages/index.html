@@ -151,6 +151,7 @@
                     <span class="bg-green-500 w-3 h-3 rounded-full absolute right-0 top-3/4 border-white border-2"></span>
                 </a>
                 </div>
+                
                 <div>
                 <a href="{% url 'users:profile' username=post.author.username %}">
                     <div class="font-semibold">
@@ -163,7 +164,6 @@
             {% endif %}
             
 
-            {% if request.user == post.author %}
             <div x-data="{ open: false }" class="relative inline-block text-left">
                 <div>
                     <button @click="open = true" type="button" class="bg-gray-100 dark:bg-dark-second  rounded-full flex items-center text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-dark-second focus:ring-offset-gray-100 focus:ring-indigo-500" id="menu-button" aria-expanded="true" aria-haspopup="true">
@@ -184,17 +184,33 @@
                       x-transition:leave-end="opacity-0"  @click.away="open=false" class="z-10 origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg dark:bg-dark-third bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                     <div class="py-1" role="none">
                     <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                    {% if request.user == post.author %}
+                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                     <a href="{% url 'social:post-edit' pk=post.pk%}" class="dark:hover:bg-dark-second dark:text-dark-txt text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">
                     Edit
                     </a>
                     <a href="{% url 'social:post-delete' pk=post.pk%}" class="dark:hover:bg-dark-second dark:text-dark-txt text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">
                     Delete
                     </a>
+                    {% else %}
+                <!-- OTRO USUARIO -->
+                <a href="#"
+                   class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-second">
+                    Guardar
+                </a>
+                <a href="#"
+                   class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-second">
+                    Denunciar
+                </a>
+                <a href="#"
+                   class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-dark-second">
+                    Bloquear usuario
+                </a>
+                {% endif %}
                     </div>
                 </div>
                 
             </div>
-            {% endif %}
             
         </div>
         <!-- END POST AUTHOR -->

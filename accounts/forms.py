@@ -1,8 +1,9 @@
 from accounts.models import Profile
 from django import forms
 from .models import UserOpinion
-
-
+from django.contrib.auth.forms import AuthenticationForm
+ 
+from allauth.account.forms import LoginForm as AllauthLoginForm
 
 class EditProfileForm(forms.ModelForm):
     first_name = forms.CharField(
@@ -41,4 +42,21 @@ class UserOpinionForm(forms.ModelForm):
             })
         }
         
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                "class": "w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring"
+            })
         
+
+class CustomLoginForm(AllauthLoginForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["login"].label = "Email"
+        self.fields["login"].widget.attrs.update({
+            "type": "email",
+            "autocomplete": "email",
+        })

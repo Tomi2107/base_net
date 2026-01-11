@@ -41,13 +41,20 @@ class PostDetailView(LoginRequiredMixin, View):
 
         comments = SocialComment.objects.filter(post=post).order_by('-created_on')
 
-        context = {
+        context_menu = {
             'post': post,
             'form': form,
-            'comments':comments
+            'comments':comments,
+            "is_self": request.user == post.author,
+            "is_friend": False,
         }
 
-        return render(request, 'pages/social/detail.html', context)
+        return render(request, 'pages/social/detail.html', {
+            'post': post,
+            'form': SocialCommentForm(),
+            'comments': SocialComment.objects.filter(post=post),
+            'context_menu': context_menu
+        })
 
 
 class SharedPostView(View):

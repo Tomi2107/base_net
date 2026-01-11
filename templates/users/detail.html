@@ -31,6 +31,10 @@
                         <img class=" h-24 w-24 rounded-full ring-4 dark:ring-dark-second ring-white sm:h-32 sm:w-32 hover:bg-gray-100"
                         src="{{profile.picture.url}}" alt="{{profile.user.username}} Profile Picture">
                     </div>
+                    <!--items menu-->
+                    <div class="flex justify-end p-2">
+                    {% include "components/menus/user_menu.html" with menu=context_menu %}
+                     </div>
                     <!-- Friend zone status -->
                     {% if friendship_status == "none" %}
                           <a href="{% url 'friends:send' profile_user.id %}"
@@ -126,6 +130,7 @@
                             {% endif %}
                         </div>
                     </div>
+
                 
                 </div>
 
@@ -138,6 +143,9 @@
                             </svg>
                         {% endif %}
                     </h1>
+                    {% if request.user != profile_user %}
+                      {% include "components/messages/start_chat_button.html" with target_user=profile.user %}
+                    {% endif %}
                 </div>
 
                 {% if profile.bio %}

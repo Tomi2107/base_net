@@ -169,40 +169,20 @@
     </div>
 
     <!-- ================= POSTS GRID ================= -->
+<div class="space-y-4">
+
     {% if posts %}
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {% for post in posts %}
-                <div class="bg-white dark:bg-dark-second rounded-lg shadow overflow-hidden">
-
-                    <div class="h-52 bg-gray-200 dark:bg-dark-third">
-                        {% if post.images.first %}
-                            <img src="{{ post.images.first.image.url }}"
-                                 class="w-full h-full object-contain" alt="">
-                        {% else %}
-                            <img src="{% static 'img/animal-placeholder.jpg' %}"
-                                 class="w-full h-full object-contain" alt="">
-                        {% endif %}
-                    </div>
-
-                    <div class="p-4">
-                        <p class="text-sm font-semibold dark:text-dark-txt">
-                            {{ post.get_status_display }} · {{ post.get_animal_type_display }}
-                        </p>
-                        <p class="text-xs text-gray-500">
-                            {{ post.place }}
-                        </p>
-                        <p class="text-sm dark:text-dark-txt mt-2 line-clamp-3">
-                            {{ post.description }}
-                        </p>
-                    </div>
-                </div>
+               {% include "components/lost_found_item.html" with post=post %}
             {% endfor %}
-        </div>
-    {% else %}
+               {% else %}
         <p class="text-center text-gray-500 mt-12">
             No hay publicaciones todavía.
         </p>
     {% endif %}
+
+        </div>
 </div>
 
 {% endblock content %}

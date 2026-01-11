@@ -1,0 +1,61 @@
+<div class="relative">
+    <!-- Botón 3 puntos -->
+    <button
+        class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-third transition"
+        onclick="this.nextElementSibling.classList.toggle('hidden')"
+    >
+        ⋮
+    </button>
+
+    <!-- Dropdown -->
+    <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-second
+                border border-gray-200 dark:border-dark-third
+                rounded-lg shadow-lg hidden z-50">
+
+        {% if friendship_status == "self" %}
+            <a href="{% url 'users:edit-profile' %}"
+               class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+                ✏️ Editar perfil
+            </a>
+
+        {% elif friendship_status == "friends" %}
+            <a href="{% url 'friends:remove' profile_user.id %}"
+               class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-dark-third">
+                ❌ Eliminar amistad
+            </a>
+            <a href="#"
+               class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+                🔕 Silenciar
+            </a>
+
+        {% elif friendship_status == "sent" %}
+            <span class="block px-4 py-2 text-sm text-gray-400">
+                ⏳ Solicitud enviada
+            </span>
+
+        {% elif friendship_status == "received" %}
+            <a href="{% url 'friends:accept' profile_user.id %}"
+               class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+                ✅ Aceptar solicitud
+            </a>
+            <a href="{% url 'friends:reject' profile_user.id %}"
+               class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-dark-third">
+                ❌ Rechazar
+            </a>
+
+        {% else %}
+            <a href="{% url 'friends:send' profile_user.id %}"
+               class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+                ➕ Agregar amigo
+            </a>
+            <a href="#"
+               class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-dark-third">
+                🚩 Denunciar usuario
+            </a>
+            <a href="#"
+               class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+                🚫 Bloquear usuario
+            </a>
+        {% endif %}
+    </div>
+</div>

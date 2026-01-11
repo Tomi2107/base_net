@@ -122,50 +122,14 @@
     <!-- FEED -->
     <div class="space-y-4">
         {% for post in posts %}
-        <div class="bg-white dark:bg-dark-second rounded-lg shadow p-4">
-
-            <div class="flex items-center mb-3">
-                <img
-                    src="{% static 'img/avatar-placeholder.png' %}"
-                    class="w-full max-w-md h-auto object-contain rounded"
-                    alt="avatar">
-
-                <div>
-                    <p class="font-semibold dark:text-dark-txt">
-                        {{ post.author.username }}
-                    </p>
-                    <p class="text-xs text-gray-500">
-                        {{ post.get_service_type_display }} · {{ post.zone }}
-                    </p>
-                </div>
-            </div>
-
-            <div class="text-sm dark:text-dark-txt mb-4 whitespace-pre-line">
-                {{ post.content }}
-            </div>
-
-            <div class="flex justify-between items-center border-t pt-3
-                        border-gray-200 dark:border-dark-third">
-                <span class="text-xs text-gray-500">
-                    {{ post.created_at|timesince }} atrás
-                </span>
-
-                <a
-                    href="#"
-                    class="flex items-center gap-2 px-4 py-2 text-sm
-                           bg-blue-500 text-white rounded-lg
-                           hover:bg-blue-600 transition">
-                    <i class='bx bx-message-rounded'></i>
-                    Contactar
-                </a>
-            </div>
-        </div>
-
+             {% include "components/parroquiales_item.html" with post=post %}
         {% empty %}
             <p class="text-center text-gray-500">
                 No hay publicaciones aún en tu zona.
             </p>
+
         {% endfor %}
+
     </div>
 
 </div>

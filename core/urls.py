@@ -41,6 +41,11 @@ urlpatterns = [
     path('search/', include('search.urls')),
     
     path("notifications/", include("notifications.urls")),
+    
+    path("interactions/", include("interactions.urls")),
+    
+    path("messages/", include("messaging.urls")),
+
 ]
 
 if settings.DEBUG:

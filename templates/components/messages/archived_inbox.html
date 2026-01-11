@@ -1,0 +1,45 @@
+{% load static %}
+{% extends "base.html" %}
+{% block title %}Archive inbox{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+
+{% block content %}
+<h2>Conversaciones archivadas</h2>
+
+{% if conversations %}
+    <ul class="chat-list">
+        {% for item in conversations %}
+            <li>
+                <a href="{% url 'messaging:conversation_detail' item.conversation.id %}">
+                    <strong>{{ item.other_user.username }}</strong><br>
+
+                    {% if item.last_message %}
+                        <small>{{ item.last_message.body|truncatechars:40 }}</small>
+                    {% else %}
+                        <small>Sin mensajes</small>
+                    {% endif %}
+                </a>
+                <a href="{% url 'messaging:unarchive_conversation' item.conversation.id %}">
+                    Desarchivar
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No tenés conversaciones archivadas.</p>
+{% endif %}
+
+<a href="{% url 'messaging:inbox' %}">← Volver al inbox</a>
+{% endblock %}

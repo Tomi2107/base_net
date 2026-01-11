@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Grupos{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+{% block content %}
+
+<h1 class="text-xl font-bold mb-4 dark:text-dark-txt">
+    Mis items guardados
+</h1>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+{% for item in items %}
+<!-- CARD WRAPPER (ACÁ VA) -->
+    <div class="bg-white dark:bg-dark-second
+                rounded-xl shadow
+                flex flex-col h-full
+                overflow-hidden">
+
+    {% if item.model == "group" %}
+        {% include "components/group_item.html" with group=item.object %}
+
+    {% elif item.model == "lostfoundpost" %}
+        {% include "components/lost_found_item.html" with post=item.object %}
+
+    {% elif item.model == "foster" %}
+            {% include "components/foster_item.html" with foster=foster %}
+    
+    {% comment %} {% elif item.model == "store" %}
+        {% for item in items %}
+        {% include "components/store_item.html" with item=item %}
+        {% endfor %} {% endcomment %}
+    {% endif %}
+</div>
+
+{% empty %}
+    <p>No tenés items guardados.</p>
+{% endfor %}
+
+</div>
+{% endblock %}

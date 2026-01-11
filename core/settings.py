@@ -66,6 +66,10 @@ INSTALLED_APPS = [
     "search",
     
     "notifications",
+    
+    "interactions",
+    
+    "messaging",
 ]
 
 SITE_ID = 1
@@ -83,6 +87,7 @@ AUTHENTICATION_BACKENDS = [
 # ================ ALLAUTH ==================== #
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_UNIQUE = True
 AUTH_USER_MODEL="accounts.User"
@@ -95,6 +100,13 @@ ACCOUNT_RATE_LIMITS = {
     'login_failed': '3/5m',  # Máximo 3 intentos fallidos en 5 minutos.
     'signup': '3/h'  # Máximo 3 registros por hora.
 }
+# ELIMINA USERNAME DEL FORM
+ACCOUNT_SIGNUP_FORM_CLASS = None
+ACCOUNT_FORMS = {
+    "login": "accounts.forms.CustomLoginForm",
+}
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -122,6 +134,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'notifications.context_processors.notifications_count',
                 'pets.context_processors.user_pets',
+                'messaging.context_processors.messages_preview'
             ],
         },
     },
@@ -136,7 +149,7 @@ DATABASES = { 'default': { 'ENGINE': 'django.db.backends.mysql', 'NAME': 'mascot
 
 # DATABASES = {
 #     "default": env.db("DATABASE_URL", default="//postgres:1@127.0.0.1:5432/social"),
-# }
+#}
 
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 

@@ -1,0 +1,48 @@
+<div class="relative">
+    <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-third transition"
+            onclick="this.nextElementSibling.classList.toggle('hidden')">
+        ⋮
+    </button>
+
+    <div class="absolute right-0 mt-2 w-44 bg-white dark:bg-dark-second
+                border border-gray-200 dark:border-dark-third
+                rounded-lg shadow-lg hidden z-50">
+
+        {% if request.user == item.owner %}
+            <!-- PROPIO -->
+            <a href="{% url '#' item.id %}"
+               class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+                ✏️ Editar
+            </a>
+
+            <a href="{% url 'interactions:remove' item.id %}"
+               class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-dark-third">
+                🗑 Eliminar
+            </a>
+
+        {% else %}
+            <!-- OTRO USUARIO -->
+            {% if not item.is_saved_by_user %}
+                <a href="{% url 'interactions:save' item.save_model item.id  %}"
+                   class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+                    ⭐ Guardar
+                </a>
+            {% else %}
+                <a href="{% url 'interactions:unsave' item.save_model item.id  %}"
+                   class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+                    ⭐ Guardado
+                </a>
+            {% endif %}
+
+            {% comment %} <a href="{% url '#' item.owner.id %}"
+               class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+                💬 Enviar mensaje
+            </a>
+
+            <a href="#"
+               class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-dark-third">
+                🚩 Denunciar
+            </a> {% endcomment %}
+        {% endif %}
+    </div>
+</div>

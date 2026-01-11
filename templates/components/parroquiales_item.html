@@ -1,0 +1,42 @@
+{% load static %}
+<div class="bg-white dark:bg-dark-second rounded-lg shadow p-4">
+
+                <div class="flex items-center mb-3">
+                    <img
+                        src="{% static 'img/avatar-placeholder.png' %}"
+                        class="w-10 h-10 rounded-full object-cover"
+                        alt="avatar">
+
+                    <div class="ml-2">
+                        <p class="font-semibold dark:text-dark-txt">
+                            {{ post.author.username }}
+                        </p>
+                        <p class="text-xs text-gray-500">
+                            {{ post.get_service_type_display }} · {{ post.zone }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-sm dark:text-dark-txt mb-4 whitespace-pre-line">
+                    {{ post.content }}
+                </div>
+
+                <div class="flex justify-between items-center border-t pt-3
+                            border-gray-200 dark:border-dark-third">
+                    <span class="text-xs text-gray-500">
+                        {{ post.created_at|timesince }} atrás
+                    </span>
+                {% if request.user != post.author %}
+                    {% include "components/messages/start_chat_button.html" with target_user=post.author %}
+                {% endif %}
+
+                </div>
+
+                <!-- MENU -->
+                {% with item=post %}
+                <div class="flex justify-end p-2">
+                    {% include "components/menus/store_item_menu.html" with post=post %}
+                </div>
+                {% endwith %}
+
+            </div>

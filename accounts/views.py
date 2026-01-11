@@ -23,6 +23,7 @@ from foster.forms import FosterAvailabilityForm
 from math import floor
 from friends.utils import get_friendship_status
 
+
 @login_required
 def UserProfileView(request, username):
     user = get_object_or_404(User, username=username)
@@ -67,6 +68,13 @@ def UserProfileView(request, username):
             return redirect("users:profile", username=profile.user.username)
     else:
         form = UserOpinionForm(instance=user_opinion)
+        
+    friendship_status = get_friendship_status(request.user, user)
+
+    menu = {
+        "is_self": request.user == user,
+        "is_friend": friendship_status == "friends",
+    }    
 
     context = {
         "profile": profile,
@@ -85,6 +93,9 @@ def UserProfileView(request, username):
 
         # 🔥 AHORA SÍ
         "friendship_status": friendship_status,
+        "context_menu": menu,
+        "is_self": request.user == user,
+        "is_friend": friendship_status == "friends",
     }
 
     return render(request, "users/detail.html", context)

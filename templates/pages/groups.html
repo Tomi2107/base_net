@@ -102,62 +102,15 @@
     <!-- GROUPS LIST -->
     <div class="space-y-4">
 
-        {% for group in groups %}
-        <div class="bg-white dark:bg-dark-second rounded-lg shadow p-4">
-
-            <div class="flex gap-4">
-
-                <!-- IMAGE -->
-                <div class="w-20 h-20 flex-shrink-0">
-                    {% if group.image %}
-                        <img src="{{ group.image.url }}"
-                             class="w-full max-w-md h-auto object-contain rounded"
-                             alt="{{ group.name }}">
-                    {% else %}
-                        <img src="{% static 'img/placeholder-group.jpg' %}"
-                             class="w-full max-w-md h-auto object-contain rounded"
-                             alt="Grupo">
-                    {% endif %}
-                </div>
-
-                <!-- INFO -->
-                <div class="flex-1">
-                    <h3 class="font-semibold text-base dark:text-dark-txt">
-                        {{ group.name }}
-                    </h3>
-
-                    <p class="text-sm text-gray-500">
-                        {{ group.location }} · {{ group.get_privacy_display }}
-                    </p>
-
-                    <p class="text-sm text-gray-600 dark:text-dark-txt mt-2 line-clamp-2">
-                        {{ group.description }}
-                    </p>
-
-                    <div class="flex gap-3 mt-4">
-                        <button
-                            class="px-4 py-1.5 text-sm rounded-lg
-                                   bg-blue-500 text-white hover:bg-blue-600 transition">
-                            Unirse
-                        </button>
-
-                        <button
-                            class="px-4 py-1.5 text-sm rounded-lg border
-                                   dark:border-dark-third dark:text-dark-txt
-                                   hover:bg-gray-100 dark:hover:bg-dark-third transition">
-                            Ver grupo
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-        {% empty %}
+    {% for group in groups %}
+        {% include "components/group_item.html" with group=group %}
+ 
+    {% empty %}
             <p class="text-center text-gray-500 py-8">
                 Todavía no hay grupos creados.
             </p>
-        {% endfor %}
+    {% endfor %}
+
 
     </div>
 

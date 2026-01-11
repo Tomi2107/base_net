@@ -3,20 +3,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import LostFoundPost
 from .forms import LostFoundForm
 from pets.models import Pet
+from interactions.models import SavedItem
+from django.contrib.contenttypes.models import ContentType
 
-def feed(request):
+@login_required
+def lost_found_feed(request):
     posts = LostFoundPost.objects.all().order_by("-created")
 
-    # ---------- SEARCH (GET) ----------
+    # ---------- SEARCH ----------
     if request.method == "GET":
-        form = LostFoundForm(
-            request.GET or None,
-            search_mode=True
-        )
-
+        form = LostFoundForm(request.GET or None, search_mode=True)
         if form.is_valid():
             data = form.cleaned_data
-
             if data.get("status"):
                 posts = posts.filter(status=data["status"])
             if data.get("animal_type"):
@@ -29,11 +27,9 @@ def feed(request):
                 posts = posts.filter(pattern=data["pattern"])
             if data.get("place"):
                 posts = posts.filter(place__icontains=data["place"])
-
-    # ---------- CREATE (POST) ----------
     else:
+        # ---------- CREATE ----------
         form = LostFoundForm(request.POST, request.FILES)
-
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -44,31 +40,25 @@ def feed(request):
 
             return redirect("lost_found:feed")
 
+    # ---------- Agregar is_saved_by_user ----------
+    if request.user.is_authenticated:
+        ct = ContentType.objects.get_for_model(LostFoundPost)
+        for post in posts:
+            post.is_saved_by_user = SavedItem.objects.filter(
+                user=request.user,
+                content_type=ct,
+                object_id=post.id
+            ).exists()
+
     return render(request, "pages/lost_found.html", {
         "form": form,
         "posts": posts
     })
 
+
 @login_required
-def remove_lost_post(request, pet_id):
-    pet = get_object_or_404(
-        Pet,
-        id=pet_id,
-        owner=request.user
-    )
+def remove_lost_post(request, post_id):
+    post = get_object_or_404(LostFoundPost, id=post_id, author=request.user)
+    post.delete()
+    return redirect("lost_found:feed")
 
-    # borrar SOLO el último post "lost" del usuario
-    post = (
-        LostFoundPost.objects
-        .filter(author=request.user, status="lost")
-        .order_by("-created")
-        .first()
-    )
-
-    if post:
-        post.delete()
-
-    pet.status = "normal"
-    pet.save()
-
-    return redirect("home")

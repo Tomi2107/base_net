@@ -58,36 +58,45 @@
         </form>
     </div>
 
-    {% for reel in reels %}
-    <div class="bg-black rounded-xl overflow-hidden relative shadow">
+{% for reel in reels %}
+<div class="relative bg-black rounded-xl overflow-hidden shadow">
 
-        <!-- VIDEO -->
-        <video class="w-full h-[520px] object-cover" controls muted loop preload="metadata">
-            <source src="{{ reel.video.url }}" type="video/mp4">
-        </video>
+    <!-- VIDEO -->
+    <video class="w-full h-[520px] object-cover" controls muted loop preload="metadata">
+        <source src="{{ reel.video.url }}" type="video/mp4">
+    </video>
 
-        <!-- USER INFO -->
-        <div class="absolute bottom-20 left-4 flex items-center gap-2 text-white">
-            <img
-                src="{% static 'img/user_placeholder.png' %}"
-                class="w-full max-w-md h-auto object-contain rounded"
-                alt="">
-            <div>
-                <p class="font-semibold">@{{ reel.author.username }}</p>
-                <p class="text-xs text-gray-300">
-                    {{ reel.created_at|naturaltime }}
-                </p>
+    <!-- OVERLAY -->
+    <div class="absolute inset-0 pointer-events-none">
+
+        <!-- USER + CAPTION -->
+        <div class="absolute bottom-4 left-4 right-20 text-white space-y-2">
+
+            <div class="flex items-center gap-2">
+                <img src="{% static 'img/user_placeholder.png' %}"
+                     class="w-9 h-9 rounded-full object-cover"
+                     alt="{{ reel.author.username }}">
+                <div>
+                    <p class="font-semibold text-sm">@{{ reel.author.username }}</p>
+                    <p class="text-xs text-gray-300">
+                        {{ reel.created_at|naturaltime }}
+                    </p>
+                </div>
             </div>
+
+            {% if reel.caption %}
+                <p class="text-sm leading-snug">
+                    {{ reel.caption }}
+                </p>
+            {% endif %}
         </div>
 
         <!-- ACTIONS -->
-        <div class="absolute bottom-4 right-4 flex flex-col gap-4 text-white text-2xl">
+        <div class="absolute bottom-6 right-4 flex flex-col gap-5 text-grey text-xl pointer-events-auto">
 
-            <button class="hover:text-blue-400 transition">
+            <button class="hover:text-blue-400 transition text-center">
                 <i class='bx bxs-like'></i>
-                <span class="text-xs block text-center">
-                    {{ reel.likes }}
-                </span>
+                <span class="text-xs block">{{ reel.likes }}</span>
             </button>
 
             <button class="hover:text-green-400 transition">
@@ -98,20 +107,22 @@
                 <i class='bx bx-share'></i>
             </button>
 
+            <!-- MENU -->
+            {% with item=reel %}
+            <div class="relative">
+                {% include "components/menus/store_item_menu.html" with item=item %}
+            </div>
+            {% endwith %}
         </div>
-
-        {% if reel.caption %}
-        <div class="absolute bottom-4 left-4 right-20 text-white text-sm">
-            {{ reel.caption }}
-        </div>
-        {% endif %}
 
     </div>
-    {% empty %}
-        <p class="text-center text-gray-400 mt-12">
-            Todavía no hay reels publicados.
-        </p>
-    {% endfor %}
+</div>
+{% empty %}
+    <p class="text-center text-gray-400 mt-12">
+        Todavía no hay reels publicados.
+    </p>
+{% endfor %}
+
 
 </div>
 

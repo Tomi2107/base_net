@@ -92,50 +92,7 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
 
     {% for item in items %}
-    <div class="bg-white dark:bg-dark-second rounded-lg shadow hover:shadow-md transition
-                overflow-hidden flex flex-col">
-
-        <!-- Image -->
-        <div class="h-40 bg-gray-200 dark:bg-dark-third">
-            {% if item.image %}
-                <img src="{{ item.image.url }}"
-                     alt="{{ item.title }}"
-                     class="w-full max-w-md h-auto object-contain rounded">
-            {% else %}
-                <img src="{% static 'img/placeholder-store.jpg' %}"
-                     alt="Item"
-                     class="w-full max-w-md h-auto object-contain rounded">
-            {% endif %}
-        </div>
-
-        <!-- Content -->
-        <div class="p-3 flex flex-col flex-1">
-
-            <h3 class="font-semibold text-sm dark:text-dark-txt line-clamp-2">
-                {{ item.title }}
-            </h3>
-
-            <p class="text-sm font-semibold text-blue-500 mt-1">
-                ${{ item.price }}
-            </p>
-
-            <p class="text-xs text-gray-500 dark:text-dark-txt mt-1">
-                {{ item.location }}
-            </p>
-
-            <p class="text-sm text-gray-600 dark:text-dark-txt mt-2 line-clamp-2">
-                {{ item.description }}
-            </p>
-
-            <div class="mt-auto pt-3">
-                <button
-                    class="w-full py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition">
-                    Enviar mensaje
-                </button>
-            </div>
-
-        </div>
-    </div>
+        {% include "components/store_item.html" with item=item %}
     {% empty %}
         <p class="col-span-full text-center text-gray-500 dark:text-dark-txt py-8">
             Todavía no hay publicaciones en el store.

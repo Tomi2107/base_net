@@ -1,0 +1,40 @@
+{% load static %}
+
+<div class="bg-white dark:bg-dark-second rounded-lg shadow p-4">
+        <!-- IMAGE -->
+        <div class="w-20 h-20 flex-shrink-0">
+            {% if group.image %}
+                <img src="{{ group.image.url }}"
+                     class="w-full h-full object-contain rounded"
+                     alt="{{ group.name }}">
+            {% else %}
+                <img src="{% static 'img/placeholder-group.png' %}"
+                     class="w-full h-full object-contain rounded"
+                     alt="Grupo">
+            {% endif %}
+        </div>
+
+        <!-- INFO + MENU -->
+
+            <!-- HEADER: TITLE + MENU -->
+            <div class="flex justify-between items-start gap-2">
+                <h3 class="font-semibold text-base dark:text-dark-txt">
+                    {{ group.name }}
+                </h3>
+                {% with item=group %}
+                {% include "components/menus/store_item_menu.html" with item=group %}
+                {% endwith %}
+            </div>
+
+            <p class="text-sm text-gray-500 mt-1">
+                {{ group.location }} · {{ group.get_privacy_display }}
+            </p>
+
+            <p class="text-sm text-gray-600 dark:text-dark-txt mt-2 line-clamp-2">
+                {{ group.description }}
+            </p>
+            {% if request.user != group.creator %}
+                {% include "components/messages/start_chat_button.html" with target_user=group.creator %}
+            {% endif %}
+        </div>
+</div>

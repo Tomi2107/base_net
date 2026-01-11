@@ -1,0 +1,28 @@
+{% load static %}
+
+<button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-third"
+        onclick="this.nextElementSibling.classList.toggle('hidden')">
+    ⋮
+</button>
+
+<div class="absolute right-0 mt-2 w-40 bg-white dark:bg-dark-second
+            border border-gray-200 dark:border-dark-third
+            rounded-lg shadow-lg hidden z-50">
+
+    <a href="{% url 'messaging:conversation_detail' conversation.id %}"
+       class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+        💬 Abrir chat
+    </a>
+
+    <a href="{% url 'messaging:archive' conversation.id %}"
+       class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+        📥 Archivar
+    </a>
+
+    <a href="{% url 'messaging:delete' conversation.id %}"
+       class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-dark-third"
+       onclick="return confirm('¿Eliminar esta conversación?')">
+        🗑 Eliminar
+    </a>
+
+</div>

@@ -134,6 +134,30 @@
             </a>
         
         {% else %}
+        <div x-data="{ openMessages: false }" class="relative">
+
+            <!-- ICON -->
+            <button @click="openMessages = !openMessages"
+                    class="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-third">
+
+                💬
+
+                {% if nav_conversations %}
+                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                {% endif %}
+            </button>
+
+            <!-- DROPDOWN -->
+            <div x-show="openMessages"
+                @click.away="openMessages = false"
+                class="absolute right-0 mt-2 w-80 bg-white dark:bg-dark-second
+                        border border-gray-200 dark:border-dark-third
+                        rounded-lg shadow-lg z-50">
+
+                {% include "components/messages/messages_preview.html" %}
+
+            </div>
+        </div>
 
         <li class="h-full xl:flex">
             <a href="#" class="inline-flex items-center justify-center p-1 rounded-full hover:bg-gray-200 dark:hover:bg-dark-third mx-1">
@@ -174,7 +198,7 @@
       class="absolute right-0 mt-2 w-72 rounded-md shadow-lg
              bg-white dark:bg-dark-second ring-1 ring-black ring-opacity-5 z-50"
     >
-      <div class="py-1 max-h-80 overflow-y-auto">
+    <div class="py-1 max-h-80 overflow-y-auto">
 
         {% for n in user.notifications.all|slice:":5" %}
           <a
@@ -192,7 +216,7 @@
             No hay notificaciones
           </span>
         {% endfor %}
-              </div>
+    </div>
 
                 <div x-show="open" @click.away="open=false" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                     <div class="py-1" role="menuiten">
