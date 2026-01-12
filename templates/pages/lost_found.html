@@ -16,173 +16,86 @@
 <div class="pt-24 max-w-6xl mx-auto px-3">
 
     <!-- HEADER -->
-    <div class="bg-white dark:bg-dark-second rounded-lg shadow p-5 mb-8">
-        <h1 class="text-xl font-bold dark:text-dark-txt mb-6">
-            🐾 Perdidos y Encontrados
-        </h1>
+    <div class="bg-white dark:bg-dark-second rounded-xl shadow p-5 mb-8">
+    <h2 class="text-lg font-semibold mb-4 dark:text-dark-txt">
+        🔍 Buscar animal
+    </h2>
 
-        <!-- ================= SEARCH FORM (GET) ================= -->
-        <form method="get"
-              action="{% url 'lost_found:feed' %}"
-              class="space-y-5 mb-6">
+    <form method="get" action="{% url 'lost_found:feed' %}" class="space-y-4">
 
-            <!-- STATUS -->
         <div>
             <span class="block text-sm font-semibold mb-2 dark:text-dark-txt">
-                Estado del animal
+                Estado
             </span>
-
-            {% if form.status.errors %}
-                <p class="text-sm text-red-500 mb-2">
-                    {{ form.status.errors.0 }}
-                </p>
-            {% endif %}
-
-            <div class="flex rounded-lg border overflow-hidden w-fit">
-
-                                {{ form.status }}
-
-            </div>
+            {{ search_form.status }}
         </div>
 
-            <!-- FILTERS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {{ form.animal_type }}
-                {{ form.size }}
-                {{ form.color }}
-                {{ form.pattern }}
-                {{ form.place }}
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ search_form.animal_type }}
+            {{ search_form.size }}
+            {{ search_form.color }}
+            {{ search_form.pattern }}
+            {{ search_form.place }}
+        </div>
 
-            <div class="text-right">
-                <button type="submit"
-                        class="px-6 py-2 rounded-lg border border-gray-300
-                               text-gray-600 hover:bg-gray-100 transition">
-                    Buscar
-                </button>
-            </div>
-        </form>
+        <div class="text-right">
+            <button class="px-6 py-2 rounded-lg border hover:bg-gray-100">
+                Buscar
+            </button>
+        </div>
+    </form>
+</div>
 
-        <hr class="my-6">
-
-        <!-- ================= CREATE POST FORM (POST) ================= -->
-        <form method="post"
-              action="{% url 'lost_found:feed' %}"
-              enctype="multipart/form-data"
-              class="space-y-5">
-
-            {% csrf_token %}
-              
-            <!-- STATUS -->
-            <div>
-                <span class="block text-sm font-semibold mb-2 dark:text-dark-txt">
-                    Estado del animal
-                </span>
-
-                {% if form.status.errors %}
-                    <p class="text-sm text-red-500 mb-2">
-                        {{ form.status.errors.0 }}
-                    </p>
-                {% endif %}
-
-                <div class="flex rounded-lg border overflow-hidden w-fit">
-
-                        {{ form.status }}
-                    
-
-                </div>
-            </div>
-            <!-- MAIN FIELDS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                <div>
-                    <label for="{{ form.animal_type.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
-                        Animal
-                    </label>
-                    {{ form.animal_type }}
-                </div>
-
-                <div id="animal-other-wrapper" class="hidden">
-                    <label for="{{ form.animal_other.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
-                        Especificar animal
-                    </label>
-                    {{ form.animal_other }}
-                </div>
-
-                <div>
-                    <label for="{{ form.size.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
-                        Tamaño
-                    </label>
-                    {{ form.size }}
-                </div>
-
-                <div>
-                    <label for="{{ form.color.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
-                        Color
-                    </label>
-                    {{ form.color }}
-                </div>
-
-                <div>
-                    <label for="{{ form.pattern.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
-                        Patrón
-                    </label>
-                    {{ form.pattern }}
-                </div>
-
-                <div>
-                    <label for="{{ form.place.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
-                        Zona / lugar
-                    </label>
-                    {{ form.place }}
-                </div>
-            </div>
-
-            <!-- DESCRIPTION -->
-            <div>
-                <label for="{{ form.description.id_for_label }}" class="text-sm font-semibold dark:text-dark-txt">
-                    Descripción
-                </label>
-                {{ form.description }}
-            </div>
-
-            <!-- IMAGES -->
-            <div>
-                <legend class="text-sm font-semibold dark:text-dark-txt">
-                    Imágenes
-                </legend>
-                <input type="file"
-                       name="images"
-                       multiple
-                       accept="image/*"
-                       class="mt-2 block w-full text-sm">
-            </div>
-
-            <div class="text-right">
-                <button type="submit"
-                        class="px-6 py-2 rounded-lg bg-blue-500
-                               text-white hover:bg-blue-600 transition">
-                    Publicar aviso
-                </button>
-            </div>
-        </form>
-    </div>
 
     <!-- ================= POSTS GRID ================= -->
-<div class="space-y-4">
+<div class="bg-white dark:bg-dark-second rounded-xl shadow p-5 mb-10">
+    <h2 class="text-lg font-semibold mb-4 dark:text-dark-txt">
+        ➕ Publicar aviso
+    </h2>
 
-    {% if posts %}
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {% for post in posts %}
-               {% include "components/lost_found_item.html" with post=post %}
-            {% endfor %}
-               {% else %}
-        <p class="text-center text-gray-500 mt-12">
-            No hay publicaciones todavía.
-        </p>
-    {% endif %}
+    <form method="post" enctype="multipart/form-data" class="space-y-4">
+        {% csrf_token %}
 
+        <div>
+            <span class="block text-sm font-semibold mb-2 dark:text-dark-txt">
+                Estado
+            </span>
+            {{ create_form.status }}
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{ create_form.animal_type }}
+            {{ create_form.size }}
+            {{ create_form.color }}
+            {{ create_form.pattern }}
+            {{ create_form.place }}
+        </div>
+
+        <div>
+            <label class="text-sm font-semibold dark:text-dark-txt">
+                Descripción
+            </label>
+            {{ create_form.description }}
+        </div>
+
+        <div>
+            <input type="file" name="images" multiple accept="image/*">
+        </div>
+
+        <div class="text-right">
+            <button class="px-6 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600">
+                Publicar
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    {% for post in posts %}
+        {% include "components/lost_found_item.html" with post=post %}
+    {% empty %}
+        <p>No hay publicaciones</p>
+    {% endfor %}
 </div>
 
 {% endblock content %}

@@ -1,14 +1,14 @@
 {% load static%}
 <div class="p-4 bg-white dark:bg-dark-second rounded shadow">
-
-                    <p class="font-semibold dark:text-dark-txt">
-                        {{ foster.user.username }}
-                    </p>
                 {% with item=foster %}
                 <div class="flex justify-end p-2">
                     {% include "components/menus/store_item_menu.html" with target_user=item %}
                 </div>
                 {% endwith %}
+                    <p class="font-semibold dark:text-dark-txt">
+                        {{ foster.user.username }}
+                    </p>
+                
                     <p class="text-sm text-gray-500">
                         {{ foster.get_animal_type_display }} ·
                         {{ foster.get_health_condition_display }}
@@ -23,7 +23,6 @@
                     <div class="mt-3 text-xs text-green-600">
                         🟢 disponible para Tránsitar
                     </div>
-                    <br>
                    {% if request.user != foster.user %}
                         {% include "components/messages/start_chat_button.html" with target_user=foster.user %}
                     {% endif %}

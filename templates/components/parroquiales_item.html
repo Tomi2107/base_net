@@ -1,6 +1,13 @@
 {% load static %}
 <div class="bg-white dark:bg-dark-second rounded-lg shadow p-4">
 
+<!-- MENU -->
+                {% with item=post %}
+                <div class="flex justify-end p-2">
+                    {% include "components/menus/store_item_menu.html" with post=post %}
+                </div>
+                {% endwith %}
+
                 <div class="flex items-center mb-3">
                     <img
                         src="{% static 'img/avatar-placeholder.png' %}"
@@ -32,11 +39,6 @@
 
                 </div>
 
-                <!-- MENU -->
-                {% with item=post %}
-                <div class="flex justify-end p-2">
-                    {% include "components/menus/store_item_menu.html" with post=post %}
-                </div>
-                {% endwith %}
+                
 
             </div>

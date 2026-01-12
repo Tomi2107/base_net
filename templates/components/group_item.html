@@ -1,7 +1,10 @@
 {% load static %}
 
 <div class="bg-white dark:bg-dark-second rounded-lg shadow p-4">
-        <!-- IMAGE -->
+                {% with item=group %}
+                {% include "components/menus/store_item_menu.html" with item=group %}
+                {% endwith %}    
+    <!-- IMAGE -->
         <div class="w-20 h-20 flex-shrink-0">
             {% if group.image %}
                 <img src="{{ group.image.url }}"
@@ -21,9 +24,7 @@
                 <h3 class="font-semibold text-base dark:text-dark-txt">
                     {{ group.name }}
                 </h3>
-                {% with item=group %}
-                {% include "components/menus/store_item_menu.html" with item=group %}
-                {% endwith %}
+                
             </div>
 
             <p class="text-sm text-gray-500 mt-1">

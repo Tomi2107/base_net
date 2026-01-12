@@ -1,8 +1,12 @@
 {% load static %}
 <div class="bg-white dark:bg-dark-second rounded-lg shadow hover:shadow-md transition
                 overflow-hidden flex flex-col">
+        <!-- MENU -->
+            <div class="flex justify-end p-2">
+                {% include "components/menus/store_item_menu.html" with item=item %}
+            </div>
         
-        <!-- Image -->
+            <!-- Image -->
         <div class="h-40 bg-gray-200 dark:bg-dark-third">
             {% if item.image %}
                 <img src="{{ item.image.url }}"
@@ -40,9 +44,6 @@
                 {% endif %}
                     </a>
             </div>
- <!-- MENU -->
-            <div class="flex justify-end p-2">
-                {% include "components/menus/store_item_menu.html" with item=item %}
-            </div>
+ 
         </div>
     </div>

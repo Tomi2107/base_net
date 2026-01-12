@@ -87,7 +87,7 @@ AUTHENTICATION_BACKENDS = [
 # ================ ALLAUTH ==================== #
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
 ACCOUNT_AUTHENTICATION_METHOD = "email"
-# ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_UNIQUE = True
 AUTH_USER_MODEL="accounts.User"
@@ -145,11 +145,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-DATABASES = { 'default': { 'ENGINE': 'django.db.backends.mysql', 'NAME': 'mascotas25$default', 'USER': 'mascotas25', 'PASSWORD': '_$SgS$X6w2uPkPz', 'HOST': 'mascotas25.mysql.pythonanywhere-services.com', 'PORT': '3306', 'OPTIONS': { 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'", }, } }
+# DATABASES = { 'default': { 'ENGINE': 'django.db.backends.mysql', 'NAME': 'mascotas25$default', 'USER': 'mascotas25', 'PASSWORD': '_$SgS$X6w2uPkPz', 'HOST': 'mascotas25.mysql.pythonanywhere-services.com', 'PORT': '3306', 'OPTIONS': { 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'", }, } }
 
-# DATABASES = {
-#     "default": env.db("DATABASE_URL", default="//postgres:1@127.0.0.1:5432/social"),
-#}
+DATABASES = {
+    "default": env.db("DATABASE_URL", default="//postgres:1@127.0.0.1:5432/social"),
+}
 
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 

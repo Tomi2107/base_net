@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Grupos{% endblock %}
+{% block title %}Guardados{% endblock %}
 
 {% block navbar %}
 {% include 'components/navbar.html' %}
@@ -37,12 +37,10 @@
         {% include "components/lost_found_item.html" with post=item.object %}
 
     {% elif item.model == "foster" %}
-            {% include "components/foster_item.html" with foster=foster %}
+            {% include "components/foster_item.html" with foster=item.object %}
     
-    {% comment %} {% elif item.model == "store" %}
-        {% for item in items %}
-        {% include "components/store_item.html" with item=item %}
-        {% endfor %} {% endcomment %}
+    {% comment %} {% elif item.model == "storeitem" %}
+        {% include "components/store_item.html" with item=item.object %} {% endcomment %}
     {% endif %}
 </div>
 
