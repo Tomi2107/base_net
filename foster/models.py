@@ -54,7 +54,3 @@ class FosterAvailability(models.Model):
     def __str__(self):
         return f"{self.user.username} · Tránsito"
 
-    @property
-    def save_model(self):
-        return "foster.FosterAvailability"
-  

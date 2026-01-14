@@ -23,9 +23,6 @@ class StoreItem(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    @property
-    def save_model(self):
-        return "storeitem"
-
+    
     def __str__(self):
         return self.title

@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import LostFoundPost
-from .forms import LostFoundForm
+from lost_found.models import LostFoundPost
+from lost_found.forms import LostFoundForm
 from pets.models import Pet
 from interactions.models import SavedItem
 from django.contrib.contenttypes.models import ContentType
+from interactions.utils import enrich_items_with_save_state
+
 
 @login_required
 def lost_found_feed(request):
@@ -43,13 +45,7 @@ def lost_found_feed(request):
             return redirect("lost_found:feed")
 
     # ⭐ Guardados
-    ct = ContentType.objects.get_for_model(LostFoundPost)
-    for post in posts:
-        post.is_saved_by_user = SavedItem.objects.filter(
-            user=request.user,
-            content_type=ct,
-            object_id=post.id
-        ).exists()
+    posts = enrich_items_with_save_state(posts, request.user)
 
     return render(request, "pages/lost_found.html", {
         "search_form": search_form,
@@ -58,10 +54,30 @@ def lost_found_feed(request):
     })
 
 
-
 @login_required
-def remove_lost_post(request, post_id):
-    post = get_object_or_404(LostFoundPost, id=post_id, author=request.user)
-    post.delete()
-    return redirect("lost_found:feed")
+def remove_lost_post(request, pet_id):
+    pet = get_object_or_404(
+        Pet,
+        id=pet_id,
+        owner=request.user
+    )
+
+    # borrar SOLO el último post "lost" del usuario
+    post = (
+        LostFoundPost.objects
+        .filter(author=request.user, status="lost")
+        .order_by("-created")
+        .first()
+    )
+
+    if post:
+        post.delete()
+
+    pet.status = "normal"
+    pet.save()
+
+    return redirect("home")
+
+
+
 

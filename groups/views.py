@@ -10,7 +10,7 @@ from .forms import GroupForm
 
 
 @method_decorator(login_required, name="dispatch")
-class GroupListView(ListView, SavedByUserMixin):
+class GroupListView(SavedByUserMixin, ListView ):
     model = Group
     template_name = "pages/groups.html"
     context_object_name = "groups"

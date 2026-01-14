@@ -8,9 +8,9 @@
                 border border-gray-200 dark:border-dark-third
                 rounded-lg shadow-lg hidden z-50">
 
+        {# ---------- EDITAR / ELIMINAR (solo propio) ---------- #}
         {% if request.user == item.owner %}
-            <!-- PROPIO -->
-            <a href="{% url '#' item.id %}"
+            <a href="#"
                class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
                 ✏️ Editar
             </a>
@@ -19,20 +19,30 @@
                class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-dark-third">
                 🗑 Eliminar
             </a>
+        {% endif %}
 
-        {% else %}
-            <!-- OTRO USUARIO -->
-            {% if not item.is_saved_by_user %}
-                <a href="{% url 'interactions:save' item.save_model item.id  %}"
-                   class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
-                    ⭐ Guardar
-                </a>
-            {% else %}
-                <a href="{% url 'interactions:unsave' item.save_model item.id  %}"
+        {# ---------- GUARDAR / GUARDADO (propio y ajeno) ---------- #}
+        {% if item.model_name %}
+            {% if item.is_saved_by_user %}
+                <a href="{% url 'interactions:unsave' item.model_name item.id %}"
                    class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
                     ⭐ Guardado
                 </a>
+            {% else %}
+                <a href="{% url 'interactions:save' item.model_name item.id %}"
+                   class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
+                    ⭐ Guardar
+                </a>
             {% endif %}
+        {% else %}
+            <span class="block px-4 py-2 text-xs text-gray-400">
+                ⚠ No disponible
+            </span>
+        {% endif %}
+
+    </div>
+</div>
+
 
             {% comment %} <a href="{% url '#' item.owner.id %}"
                class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-dark-third">
@@ -43,6 +53,6 @@
                class="block px-4 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-dark-third">
                 🚩 Denunciar
             </a> {% endcomment %}
-        {% endif %}
+        {% comment %} {% endif %}
     </div>
-</div>
+</div> {% endcomment %}

@@ -79,10 +79,7 @@ class LostFoundPost(models.Model):
     def __str__(self):
         return f"{self.get_status_display()} · {self.get_animal_type_display()}"
 
-    @property
-    def save_model(self):
-        return "lost_found.LostFoundPost"
-
+    
 class LostFoundImage(models.Model):
 
     post = models.ForeignKey(

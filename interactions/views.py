@@ -6,6 +6,8 @@ from django.apps import apps
 
 from .models import SavedItem
 
+from interactions.utils import enrich_items_with_save_state
+
 # -----------------------------
 # Guardar cualquier post
 # -----------------------------
@@ -56,6 +58,7 @@ def remove_store_item(request, item_id):
 # -----------------------------
 # Lista de items guardados
 # -----------------------------
+@login_required
 def saved_items_list(request):
     saved_items = (
         SavedItem.objects
@@ -63,22 +66,30 @@ def saved_items_list(request):
         .select_related("content_type")
     )
 
-    items = []
+    objects = []
 
     for s in saved_items:
         obj = s.content_object
         if not obj:
             continue
 
-        items.append({
-            "object": obj,
-            "model": s.content_type.model,          # "group", "lostfoundpost", etc.
-            "app": s.content_type.app_label,        # opcional
-            "is_saved": True,
-        })
+        # dueño universal
+        owner = (
+            getattr(obj, "owner", None)
+            or getattr(obj, "creator", None)
+            or getattr(obj, "author", None)
+            or getattr(obj, "user", None)
+        )
+
+        obj.is_owner = owner == request.user
+        obj.is_saved_by_user = True
+        obj.model_name = f"{obj._meta.app_label}.{obj._meta.model_name}"
+
+        objects.append(obj)
 
     return render(
         request,
         "interactions/saved_items_list.html",
-        {"items": items}
+        {"items": objects}
     )
+

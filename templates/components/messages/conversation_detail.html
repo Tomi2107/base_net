@@ -24,6 +24,10 @@
         <h2 class="p-4 font-bold text-lg dark:text-dark-txt">
             💬 Chats
         </h2>
+        <a href="{% url 'messaging:archived_inbox' %}"
+        class="text-sm text-gray-500 hover:underline">
+        📦 Archivados
+        </a>
 
         {% for conv in sidebar_conversations %}
         <a href="{% url 'messaging:conversation_detail' conv.id %}"
@@ -54,6 +58,8 @@
             </span>
             {% endif %}
         </a>
+        {% include "components/menus/conversation_menu.html" %}
+
         {% endfor %}
 
     </aside>

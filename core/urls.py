@@ -45,6 +45,8 @@ urlpatterns = [
     path("interactions/", include("interactions.urls")),
     
     path("messages/", include("messaging.urls")),
+    
+    
 
 ]
 

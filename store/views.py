@@ -6,7 +6,7 @@ from .forms import StoreItemForm
 from interactions.mixins import SavedByUserMixin
 from django.db.models import Q
 
-class StoreListView(ListView, SavedByUserMixin):
+class StoreListView( SavedByUserMixin, ListView):
     model = StoreItem
     template_name = "pages/store.html"
     context_object_name = "items"

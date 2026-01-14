@@ -34,6 +34,4 @@ class ParroquialPost(models.Model):
     def __str__(self):
         return f"{self.title} - {self.zone}"
 
-    @property
-    def save_model(self):
-        return "parroquiales.ParroquialPost"
+    

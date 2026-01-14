@@ -25,6 +25,4 @@ class Group(models.Model):
     def __str__(self):
         return self.name
 
-    @property
-    def save_model(self):
-        return "groups.Group"
+    
