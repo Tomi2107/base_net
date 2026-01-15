@@ -70,6 +70,12 @@ def conversation_detail(request, pk):
         conversation=conversation,
         user=request.user
     ).update(unread_count=0)
+    
+    conversation.messages.filter(
+    is_read=False
+    ).exclude(
+        sender=request.user
+    ).update(is_read=True)
 
     return render(
         request,

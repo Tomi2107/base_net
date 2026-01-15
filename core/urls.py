@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import HomeView, LandingPageView, reels_view, store_view, groups_view, AccountSettingsView
+from .views import HomeView, LandingPageView, reels_view, store_view, groups_view, AccountSettingsView, terms_view
 
 
 
@@ -45,6 +45,9 @@ urlpatterns = [
     path("interactions/", include("interactions.urls")),
     
     path("messages/", include("messaging.urls")),
+    
+    path("terminos/", terms_view, name="terms"),
+
     
     
 

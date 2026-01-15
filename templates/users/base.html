@@ -1,11 +1,15 @@
 {% load static %}
 
 
-<html lang="en">
+<html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="{% static 'js/theme-init.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
 
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon2.png' %}">
@@ -25,7 +29,7 @@
     <script src="{% static 'js/theme-init.js' %}"></script>
 
 </head>
-<body class="bg-gray-100 dark:bg-dark-main flex justify-center ">
+<body class="bg-gray-100 dark:bg-dark-main text-gray-900 dark:text-dark-txt">
     
     <!-- NAVBAR -->
     {% block navbar %}{% endblock navbar %}
@@ -42,7 +46,6 @@
     <!-- FOOTER -->
     <!-- Scripts -->
     {% block javascript %}
-    <script src="{% static 'js/theme-toggle.js' %}"></script>
    <script>
 const lostBtn = document.getElementById('lost-btn');
 const lostModal = document.getElementById('lost-modal');
@@ -86,6 +89,7 @@ if (lostBtn && lostModal && cancelLost && lostForm) {
 }
 </script>
 
+    <script src="{% static 'js/theme-toggle.js' %}"></script>
 
     {% endblock javascript %}
 

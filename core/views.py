@@ -7,6 +7,9 @@ from social.forms import SocialPostForm, ShareForm
 
 from django.contrib.auth.decorators import login_required
 
+from django.utils.timezone import now
+
+
 class AccountSettingsView(TemplateView):
     template_name = "account/account_settings.html"
 
@@ -81,3 +84,7 @@ class HomeView(LoginRequiredMixin, View):
         return render(request, 'pages/index.html', context)
 
 
+def terms_view(request):
+    return render(request, "legal/terms.html", {
+        "now": now()
+    })

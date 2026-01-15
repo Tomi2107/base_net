@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Términos y Condiciones{% endblock %}
+
+{% block content %}
+<div class="pt-24 px-4 max-w-3xl mx-auto">
+
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow p-6">
+
+        <h1 class="text-2xl font-bold mb-4 dark:text-dark-txt">
+            Términos y Condiciones
+        </h1>
+
+        <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">
+            Última actualización: {{ now|date:"d/m/Y" }}
+        </p>
+
+        <div class="space-y-5 text-gray-700 dark:text-gray-200 text-sm leading-relaxed">
+
+            <p>
+                Bienvenido/a a nuestra comunidad. Este espacio fue creado para compartir,
+                conectar y ayudarnos entre usuarios. Al usar esta plataforma, aceptás
+                estos Términos y Condiciones.
+            </p>
+
+            <h2 class="font-semibold text-base">🤝 Uso responsable</h2>
+            <p>
+                Esperamos que todas las personas utilicen la plataforma con respeto,
+                empatía y buena fe. Cada usuario es responsable de lo que publica,
+                comenta o envía por mensajes privados.
+            </p>
+
+            <h2 class="font-semibold text-base">📝 Contenido de usuarios</h2>
+            <p>
+                El contenido publicado (textos, imágenes, mensajes, enlaces, etc.)
+                pertenece a quien lo crea. La plataforma no controla ni valida previamente
+                ese contenido.
+            </p>
+            <p>
+                Por lo tanto, <strong>no nos responsabilizamos por el uso indebido de la
+                plataforma ni por las acciones, opiniones o publicaciones de terceros</strong>.
+            </p>
+
+            <h2 class="font-semibold text-base">🚫 Lo que no está permitido</h2>
+            <ul class="list-disc pl-5 space-y-1">
+                <li>Contenido ofensivo, violento o discriminatorio.</li>
+                <li>Suplantar la identidad de otra persona.</li>
+                <li>Usar la plataforma con fines ilegales.</li>
+                <li>Molestar, acosar o dañar a otros miembros.</li>
+            </ul>
+
+            <p>
+                Nos reservamos el derecho de eliminar contenido o cuentas que no respeten
+                estas reglas para cuidar a la comunidad.
+            </p>
+
+            <h2 class="font-semibold text-base">🔐 Privacidad</h2>
+            <p>
+                Cada usuario decide qué compartir. Parte de la información puede ser
+                visible para otros miembros según la configuración del perfil.
+            </p>
+
+            <h2 class="font-semibold text-base">⚠️ Responsabilidad</h2>
+            <p>
+                Esta plataforma funciona como un punto de encuentro entre personas.
+                No nos hacemos responsables por acuerdos, conflictos o situaciones que
+                ocurran entre usuarios, dentro o fuera del sitio.
+            </p>
+
+            <h2 class="font-semibold text-base">🔄 Cambios</h2>
+            <p>
+                Estos términos pueden actualizarse. El uso continuo de la plataforma
+                implica la aceptación de las modificaciones.
+            </p>
+
+            <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-8">
+                Gracias por ser parte y ayudar a mantener un espacio sano 💙
+            </p>
+
+        </div>
+        <!-- ACCIONES -->
+        <div class="mt-8 flex justify-between items-center">
+
+            <!-- volver atrás -->
+            <a href="javascript:history.back()"
+               class="text-sm text-blue-500 hover:underline">
+                ← Volver
+            </a>
+
+            <!-- volver al inicio -->
+            <a href="{% url 'home' %}"
+               class="text-sm text-gray-500 hover:underline">
+                Ir al inicio
+            </a>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

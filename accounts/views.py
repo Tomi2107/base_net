@@ -23,6 +23,7 @@ from foster.forms import FosterAvailabilityForm
 from math import floor
 from friends.utils import get_friendship_status
 
+from django.contrib import messages
 
 @login_required
 def UserProfileView(request, username):
@@ -238,5 +239,14 @@ def delete_opinion(request, opinion_id):
     profile_username = opinion.profile.user.username
     opinion.delete()
 
-    return redirect("users:profile", username=profile_username)
-    
+    return redirect("users:profile", username=profile_username)    
+
+@login_required
+def account_delete(request):
+    if request.method == "POST":
+        user = request.user
+        user.delete()
+        messages.success(request, "Tu cuenta ha sido eliminada correctamente.")
+        return redirect("landing")  # o 'account_login' si querés ir al login
+
+    return render(request, "account/account_delete_confirm.html")    

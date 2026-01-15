@@ -5,12 +5,12 @@
     <a href="{% url 'messaging:conversation_detail' conv.id %}"
     class="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-dark-third">
 
-        <img src="{{ other_user.profile.picture.url }}"
+        <img src="{{ conv.other.profile.picture.url }}"
             class="w-10 h-10 rounded-full" alt="mensajes">
 
         <div class="flex-1">
             <p class="font-semibold text-sm dark:text-dark-txt">
-                {{ conv.other_user.username }}
+                {{ conv.other.username }}
             </p>
 
             {% if conv.last_message %}
@@ -20,6 +20,10 @@
             {% endif %}
         </div>
     </a>
+    {% empty %}
+    <span class="block px-4 py-2 text-sm text-gray-400">
+        No hay mensajes
+    </span>
     {% endfor %}
 
 

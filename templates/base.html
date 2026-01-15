@@ -1,11 +1,15 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="{% static 'js/theme-init.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
 
     <!-- Tailwind compilado -->
     <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
@@ -18,9 +22,6 @@
 
     <!-- JQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-
-    <!-- Theme init -->
-    <script src="{% static 'js/theme-init.js' %}"></script>
 
         <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon2.png' %}">
@@ -68,9 +69,9 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
     {% comment %} <script src="{% static '/js/app.js' %}"> </script> {% endcomment %}
+    <script src="{% static 'js/theme-toggle.js' %}"></script>
     
     {% block javascript %}
-    <script src="{% static 'js/theme-toggle.js' %}"></script>
 
     {% endblock javascript %}
 

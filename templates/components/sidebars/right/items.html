@@ -12,38 +12,46 @@
 </div>
 
 <!-- CONTACTOS / MENSAJERÍA -->
+<!-- CONTACTOS / MENSAJERÍA -->
 <div class="p-4 bg-white dark:bg-dark-second rounded-lg shadow">
     <h3 class="text-sm font-semibold text-gray-600 dark:text-dark-txt mb-3">
         Contactos
     </h3>
 
     <ul class="space-y-2">
-        <!-- contacto -->
-        <li>
-            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-200 dark:hover:bg-dark-third rounded-lg transition">
-                <span class="relative">
-                    <img src="{% static 'img/user_placeholder.png' %}" class="w-8 h-8 rounded-full" alt="">
-                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white dark:border-dark-second"></span>
-                </span>
-                <span class="text-sm font-medium dark:text-dark-txt">
-                    Usuario 1
-                </span>
-            </a>
-        </li>
 
+        {% for user in nav_contacts %}
         <li>
-            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-200 dark:hover:bg-dark-third rounded-lg transition">
+            <a href="{% url 'messaging:start' user.username %}"
+               class="flex items-center space-x-2 p-2 hover:bg-gray-200 dark:hover:bg-dark-third rounded-lg transition">
+
                 <span class="relative">
-                    <img src="{% static 'img/user_placeholder.png' %}" class="w-8 h-8 rounded-full" alt="">
-                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-gray-400 rounded-full border-2 border-white dark:border-dark-second"></span>
+                    <img
+                    src="{% if user.profile.picture %}{{ user.profile.picture.url }}{% else %}{% static 'img/user_placeholder.png' %}{% endif %}"
+                    class="w-8 h-8 rounded-full object-cover"
+                    alt="{{ user.username }}">
+
+
+                    <!-- online/offline (futuro) -->
+                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5
+                                 bg-gray-400 rounded-full
+                                 border-2 border-white dark:border-dark-second"></span>
                 </span>
+
                 <span class="text-sm font-medium dark:text-dark-txt">
-                    Usuario 2
+                    {{ user.username }}
                 </span>
             </a>
         </li>
+        {% empty %}
+        <li class="text-sm text-gray-400 px-2">
+            Sin contactos aún
+        </li>
+        {% endfor %}
+
     </ul>
 </div>
+
 
 <!-- ACCIONES -->
 <div class="p-4 bg-white dark:bg-dark-second rounded-lg shadow">

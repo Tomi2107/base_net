@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     
     "search",
     
-    "notifications",
+    'notifications.apps.NotificationsConfig',
     
     "interactions",
     
@@ -134,7 +134,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'notifications.context_processors.notifications_count',
                 'pets.context_processors.user_pets',
-                'messaging.context_processors.messages_preview'
+                'messaging.context_processors.messages_preview',    
+                "messaging.context_processors.contacts_list",
+
             ],
         },
     },

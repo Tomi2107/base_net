@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Delete Account{% endblock %}
+
+{% block content %}
+<div class="pt-24 px-3 max-w-md mx-auto">
+
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow p-6 text-center">
+        <h1 class="text-xl font-bold mb-4 dark:text-dark-txt">⚠️ Delete Account</h1>
+        <p class="mb-6 dark:text-dark-txt">
+            Esta acción eliminará permanentemente tu cuenta y todos tus datos.
+            ¿Estás seguro de que quieres continuar?
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit"
+                class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                Sí, borrar mi cuenta
+            </button>
+            <a href="{% url 'account_settings' %}"
+               class="ml-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+                Cancelar
+            </a>
+        </form>
+    </div>
+
+</div>
+{% endblock content %}
