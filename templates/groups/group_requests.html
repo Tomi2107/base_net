@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="max-w-2xl mx-auto pt-24 px-4">
+
+    <h2 class="text-xl font-bold mb-4">
+        Solicitudes para {{ group.name }}
+    </h2>
+
+    <div class="space-y-3">
+        {% for m in requests %}
+        <div class="flex items-center justify-between bg-white p-3 rounded shadow">
+
+            <div>
+                <p class="font-semibold">{{ m.user.username }}</p>
+                <p class="text-sm text-gray-500">Solicitud pendiente</p>
+            </div>
+
+            <div class="flex gap-2">
+                <a href="{% url 'groups:approve' m.id %}"
+                   class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
+                    Aprobar
+                </a>
+
+                <a href="{% url 'groups:reject' m.id %}"
+                   class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                    Rechazar
+                </a>
+            </div>
+
+        </div>
+        {% empty %}
+        <p class="text-gray-500 text-center">
+            No hay solicitudes pendientes.
+        </p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

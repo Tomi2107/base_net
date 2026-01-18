@@ -111,9 +111,32 @@
 
         <!-- MENU -->
         <li class="hidden md:block text-center">
+            <div x-data="{ open: false }" class="relative">
+
+    <!-- 🔔 Bell -->
+    <div
+      @click="open = !open"
+      class="w-1/5 md:w-max text-center dark:bg-dark-third dark:text-dark-txt
+              mx-1 p-3 cursor-pointer relative"
+    >
             <button class="text-3xl py-2 px-4 xl:px-12 text-gray-600 hover:bg-gray-100 dark:text-dark-txt dark:hover:bg-dark-third">
                 <i class='bx bx-menu'></i>
+     
+                <div x-show="open" @click.away="open=false" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                    <div class="py-1" role="menuiten">
+                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                    <a href="{% url 'account_settings' %}" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Account settings</a>
+                    <a href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Support</a>
+                    <a href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">License</a>
+                       
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'account_logout' %}" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Sign Out</a>
+                    {% endif %}
+                    </div>
+                </div>
+     
             </button>
+            
         </li>
 
     </ul>
@@ -174,70 +197,62 @@
 
     <!-- 🔔 Bell -->
     <div
-      @click="open = !open"
-      class="text-xl grid place-items-center bg-gray-200 dark:bg-dark-third dark:text-dark-txt
-             rounded-full mx-1 p-3 cursor-pointer hover:bg-gray-300 relative"
+        @click="open = !open"
+        class="text-xl grid place-items-center bg-gray-200 dark:bg-dark-third
+            rounded-full mx-1 p-3 cursor-pointer hover:bg-gray-300 relative"
     >
-      <i class="bx bxs-bell"></i>
+        <i class="bx bxs-bell"></i>
 
-      {% if notifications_count > 0 %}
-      <span
-        class="text-xs absolute -top-1 -right-1 bg-red-500 text-white
-               font-semibold rounded-full px-1"
-      >
-        {{ notifications_count }}
-      </span>
-      {% endif %}
+        {% if notifications_count > 0 %}
+        <span class="text-xs absolute -top-1 -right-1 bg-red-500 text-white
+                    font-semibold rounded-full px-1">
+            {{ notifications_count }}
+        </span>
+        {% endif %}
     </div>
 
-    <!-- 📩 Dropdown -->
+    <!-- Dropdown -->
     <div
-      x-show="open"
-      @click.away="open = false"
-      x-transition
-      class="absolute right-0 mt-2 w-72 rounded-md shadow-lg
-             bg-white dark:bg-dark-second ring-1 ring-black ring-opacity-5 z-50"
+        x-show="open"
+        @click.away="open = false"
+        x-transition
+        class="absolute right-0 mt-2 w-72 rounded-md shadow-lg
+            bg-white dark:bg-dark-second z-50"
     >
-    <div class="py-1 max-h-80 overflow-y-auto">
+        <div class="py-1 max-h-80 overflow-y-auto">
 
-        {% for n in user.notifications.all|slice:":5" %}
-          <a
-            href="{% url 'notifications:go' n.id %}"
+            {% for n in nav_notifications %}
+            <a href="{% url 'notifications:go' n.id %}"
             class="block px-4 py-2 text-sm
-                   {% if not n.is_read %}
-                     font-semibold bg-gray-100 dark:bg-dark-third
-                   {% endif %}
-                   hover:bg-gray-200 dark:hover:bg-dark-third"
-          >
-            {{ n.text }}
-          </a>
-        {% empty %}
-          <span class="block px-4 py-2 text-sm text-gray-400">
-            No hay notificaciones
-          </span>
-        {% endfor %}
+            {% if not n.is_read %}
+                    font-semibold bg-gray-100 dark:bg-dark-third
+            {% endif %}
+            hover:bg-gray-200 dark:hover:bg-dark-third">
+                {{ n.text }}
+            </a>
+            {% empty %}
+            <span class="block px-4 py-2 text-sm text-gray-400">
+                No hay notificaciones
+            </span>
+            {% endfor %}
+
+            <!-- FUTURA VIEW -->
+            <a href="{% url 'notifications:list' %}"
+            class="block text-center text-sm py-2 text-blue-500 hover:underline">
+                Ver todas
+            </a>
+
+        </div>
     </div>
+</div>
 
-                <div x-show="open" @click.away="open=false" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg dark:bg-dark-second bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                    <div class="py-1" role="menuiten">
-                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                    <a href="{% url 'account_settings' %}" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Account settings</a>
-                    <a href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-1">Support</a>
-                    <a href="#" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-2">License</a>
-                       
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'account_logout' %}" class="text-gray-700 dark:text-dark-txt block px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="menu-item-0">Sign Out</a>
-                    {% endif %}
-                    </div>
-                </div>
             </div>
-
         </li>
         <li>
-            <button id="theme-toggle"
+            {% comment %} <button id="theme-toggle"
            class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-dark-third transition">
                 🌙
-            </button>
+            </button> {% endcomment %}
 
         </li>
         {% endif %}

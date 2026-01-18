@@ -1,10 +1,23 @@
 {% load static %}
 
-<div class="bg-white dark:bg-dark-second rounded-lg shadow p-4">
+<div
+  id="group-{{ group.id }}"
+  class="
+    bg-white dark:bg-dark-second rounded-lg shadow p-4
+    {% if highlight_id == group.id|stringformat:'s' %}
+        ring-2 ring-blue-500 bg-blue-50 dark:bg-dark-third
+    {% endif %}
+  "
+>
+
+        <div class="flex justify-end p-2">
                 {% with item=group %}
                 {% include "components/menus/store_item_menu.html" with item=group %}
-                {% endwith %}    
-    <!-- IMAGE -->
+                {% endwith %}
+        </div>
+    <div class="flex gap-4">
+
+        <!-- IMAGE -->
         <div class="w-20 h-20 flex-shrink-0">
             {% if group.image %}
                 <img src="{{ group.image.url }}"
@@ -17,15 +30,15 @@
             {% endif %}
         </div>
 
-        <!-- INFO + MENU -->
-
-            <!-- HEADER: TITLE + MENU -->
-            <div class="flex justify-between items-start gap-2">
-                <h3 class="font-semibold text-base dark:text-dark-txt">
+        <!-- INFO -->
+        <div class="flex-1">
+            <h3 class="font-semibold text-base dark:text-dark-txt">
+                <a href="{% url 'groups:profile' group.id %}"
+                class="hover:underline">
                     {{ group.name }}
-                </h3>
-                
-            </div>
+                </a>
+
+            </h3>
 
             <p class="text-sm text-gray-500 mt-1">
                 {{ group.location }} · {{ group.get_privacy_display }}
@@ -34,8 +47,22 @@
             <p class="text-sm text-gray-600 dark:text-dark-txt mt-2 line-clamp-2">
                 {{ group.description }}
             </p>
+            <div class="flex gap-3 mt-4">
+                <button
+                    class="px-4 py-1.5 text-sm rounded-lg
+                            bg-blue-500 text-white hover:bg-blue-600 transition">
+                    Unirse
+                </button>
+                <a href="{% url 'groups:profile' group.id %}"
+                    class="hover:border">
+                    Ver grupo
+                </a>
+            </div>
+
             {% if request.user != group.creator %}
                 {% include "components/messages/start_chat_button.html" with target_user=group.creator %}
             {% endif %}
         </div>
+
+    </div>
 </div>

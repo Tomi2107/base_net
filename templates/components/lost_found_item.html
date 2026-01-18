@@ -1,12 +1,18 @@
 {% load static %}
-
+<div
+  id="lostfoundpost-{{ lostfoundpost.id }}"
+  class="
+    bg-white dark:bg-dark-second rounded-lg shadow p-4
+    {% if highlight_id == lostfoundpost.id|stringformat:'s' %}
+        ring-2 ring-blue-500 bg-blue-50 dark:bg-dark-third
+    {% endif %}
+  "
+>
 <div class="bg-white dark:bg-dark-second rounded-xl shadow overflow-hidden flex flex-col h-full">
     <!-- MENU -->
-    {% with item=post %}
-    <div class="flex justify-end p-2 border-t dark:border-dark-third">
-        {% include "components/menus/store_item_menu.html" %}
-    </div>
-    {% endwith %}
+                <div class="flex justify-end p-2">
+                    {% include "components/menus/store_item_menu.html" with item=post %}
+                </div>
     <!-- IMAGE -->
     <div class="h-52 bg-gray-200 dark:bg-dark-third">
         {% if post.images.first %}
@@ -40,4 +46,5 @@
     </div>
 
 
+</div>
 </div>

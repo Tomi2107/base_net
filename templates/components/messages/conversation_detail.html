@@ -20,47 +20,60 @@
 
         <!-- sidebar chat -->
     <aside class="w-80 bg-white dark:bg-dark-second border-r dark:border-dark-third overflow-y-auto">
-
+<div>
         <h2 class="p-4 font-bold text-lg dark:text-dark-txt">
             💬 Chats
         </h2>
         <a href="{% url 'messaging:archived_inbox' %}"
-        class="text-sm text-gray-500 hover:underline">
+        class="text-sm text-gray-500 hover">
         📦 Archivados
         </a>
+    </div>
+    
+{% for conv in sidebar_conversations %}
+<div class="relative border-b">
 
-        {% for conv in sidebar_conversations %}
-        <a href="{% url 'messaging:conversation_detail' conv.id %}"
-        class="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-dark-third
-        {% if conv.id == conversation.id %}bg-gray-100 dark:bg-dark-third{% endif %}">
+    <!-- MENU (NO EMPUJA NADA) -->
+    <div class="absolute top-2 right-2 z-10">
+        {% include "components/menus/conversation_menu.html" with conversation=conv %}
+    </div>
 
-            <!-- Avatar -->
-            <img src="{{ conv.other.profile.picture.url }}"
-                class="w-12 h-12 rounded-full object-cover"
-                alt="{{ conv.other.username }}">
+    <!-- CARD CLICKABLE -->
+    <a href="{% url 'messaging:conversation_detail' conv.id %}"
+       class="flex items-center gap-3 px-4 py-3
+              hover:bg-gray-100 dark:hover:bg-dark-third
+              {% if conv.id == conversation.id %}
+                  bg-gray-100 dark:bg-dark-third
+              {% endif %}">
 
-            <!-- Info -->
-            <div class="flex-1 min-w-0">
-                <p class="font-semibold text-sm dark:text-dark-txt truncate">
-                    {{ conv.other.username }}
-                </p>
+        <!-- Avatar -->
+        <img src="{{ conv.other.profile.picture.url }}"
+             class="w-12 h-12 rounded-full object-cover"
+             alt="{{ conv.other.username }}">
 
-                {% if conv.last_message %}
-                <p class="text-xs text-gray-500 truncate">
-                    {{ conv.last_message.body }}
-                </p>
-                {% endif %}
-            </div>
+        <!-- Info -->
+        <div class="flex-1 min-w-0">
+            <p class="font-semibold text-sm dark:text-dark-txt truncate">
+                {{ conv.other.username }}
+            </p>
 
-            {% if conv.unread_count > 0 %}
-            <span class="ml-auto bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                {{ conv.unread_count }}
-            </span>
+            {% if conv.last_message %}
+            <p class="text-xs text-gray-500 truncate">
+                {{ conv.last_message.body }}
+            </p>
             {% endif %}
-        </a>
-        {% include "components/menus/conversation_menu.html" %}
+        </div>
 
-        {% endfor %}
+        {% if conv.unread_count > 0 %}
+        <span class="ml-auto bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+            {{ conv.unread_count }}
+        </span>
+        {% endif %}
+    </a>
+
+</div>
+{% endfor %}
+
 
     </aside>
 

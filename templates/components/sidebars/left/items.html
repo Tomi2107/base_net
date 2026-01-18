@@ -97,6 +97,46 @@
             <span class="font-semibold">Guardados</span>
         </a>
     </li>
+<!-- 👥 GRUPOS -->
+<div class="mt-4">
+    <p class="text-xs uppercase text-gray-400 mb-2 px-2">
+        Grupos
+    </p>
+
+    <!-- 🔹 Grupos donde soy miembro -->
+    {% if my_groups %}
+        <p class="text-xs text-gray-400 px-2 mb-1">
+            Mis grupos
+        </p>
+
+        {% for group in my_groups %}
+            <a href="{% url 'groups:profile' group.id %}"
+               class="block p-2 rounded hover:bg-gray-100
+                      dark:hover:bg-dark-third text-sm">
+                👥 {{ group.name|truncatechars:22 }}
+            </a>
+        {% endfor %}
+    {% else %}
+        <p class="text-xs text-gray-400 px-2">
+            No pertenecés a ningún grupo
+        </p>
+    {% endif %}
+
+    <!-- 🔸 Grupos seguidos -->
+    {% if followed_groups %}
+        <p class="text-xs text-gray-400 px-2 mt-3 mb-1">
+            Grupos seguidos
+        </p>
+
+        {% for group in followed_groups %}
+            <a href="{% url 'groups:profile' group.id %}"
+               class="block p-2 rounded hover:bg-gray-100
+                      dark:hover:bg-dark-third text-sm">
+                ⭐ {{ group.name|truncatechars:22 }}
+            </a>
+        {% endfor %}
+    {% endif %}
+</div>
 
 </ul>
 

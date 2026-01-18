@@ -1,10 +1,19 @@
 {% load static %}
-<div class="bg-white dark:bg-dark-second rounded-lg shadow hover:shadow-md transition
+<div
+  id="storeitem-{{ store.id }}"
+  class="
+    bg-white dark:bg-dark-second rounded-lg shadow p-4
+    {% if highlight_id == store.id|stringformat:'s' %}
+        ring-2 ring-blue-500 bg-blue-50 dark:bg-dark-third
+    {% endif %}
+  "
+>
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow hover:shadow-md transition
                 overflow-hidden flex flex-col">
         <!-- MENU -->
-            <div class="flex justify-end p-2">
-                {% include "components/menus/store_item_menu.html" with item=item %}
-            </div>
+                <div class="flex justify-end p-2">
+                    {% include "components/menus/store_item_menu.html" with item=item %}
+                </div>
         
             <!-- Image -->
         <div class="h-40 bg-gray-200 dark:bg-dark-third">
@@ -47,3 +56,6 @@
  
         </div>
     </div>
+
+
+</div>

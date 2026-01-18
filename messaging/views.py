@@ -27,7 +27,9 @@ def conversation_detail(request, pk):
         participants=request.user
     )
 
+    # ─────────────────────────────
     # POST: enviar mensaje
+    # ─────────────────────────────
     if request.method == "POST":
         Message.objects.create(
             conversation=conversation,
@@ -35,7 +37,7 @@ def conversation_detail(request, pk):
             body=request.POST.get("body")
         )
 
-        # sumar unread al otro
+        # sumar unread al otro usuario
         other = conversation.other_user(request.user)
         member = ConversationParticipant.objects.get(
             conversation=conversation,
@@ -46,16 +48,32 @@ def conversation_detail(request, pk):
 
         return redirect("messaging:conversation_detail", pk=pk)
 
-    # SIDEBAR CHAT (preparado)
-    sidebar_conversations = []
+    # ─────────────────────────────
+    # marcar conversación actual como leída
+    # ─────────────────────────────
+    ConversationParticipant.objects.filter(
+        conversation=conversation,
+        user=request.user
+    ).update(unread_count=0)
 
+    conversation.messages.filter(
+        is_read=False
+    ).exclude(
+        sender=request.user
+    ).update(is_read=True)
+
+    # ─────────────────────────────
+    # SIDEBAR CHAT (ORDEN CORRECTO)
+    # ─────────────────────────────
     memberships = (
         ConversationParticipant.objects
         .filter(user=request.user, is_archived=False)
         .select_related("conversation")
         .prefetch_related("conversation__messages", "conversation__participants")
+        .order_by("-unread_count", "-conversation__updated_at")
     )
 
+    sidebar_conversations = []
     for m in memberships:
         conv = m.conversation
         sidebar_conversations.append({
@@ -64,18 +82,6 @@ def conversation_detail(request, pk):
             "last_message": conv.last_message(),
             "unread_count": m.unread_count,
         })
-
-    # marcar conversación actual como leída
-    ConversationParticipant.objects.filter(
-        conversation=conversation,
-        user=request.user
-    ).update(unread_count=0)
-    
-    conversation.messages.filter(
-    is_read=False
-    ).exclude(
-        sender=request.user
-    ).update(is_read=True)
 
     return render(
         request,
@@ -87,8 +93,6 @@ def conversation_detail(request, pk):
         }
     )
 
-
-    
 @login_required
 def inbox(request):
     conversations = (
@@ -205,3 +209,4 @@ def unarchive_conversation(request, pk):
     membership.save()
 
     return redirect("messaging:archived_inbox")
+

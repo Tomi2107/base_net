@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ group.name }}{% endblock %}
+
+{% block navbar %}
+{% include "components/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto pt-24 px-3">
+
+    <!-- 🖼 COVER -->
+    <div class="relative h-48 bg-gray-300 dark:bg-dark-third rounded-lg overflow-hidden">
+        {% if group.cover %}
+            <img src="{{ group.cover.url }}"
+                 class="w-full h-full object-cover"
+                 alt="Cover del grupo">
+        {% endif %}
+    </div>
+
+    <!-- 🧑‍🤝‍🧑 HEADER -->
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow p-6 -mt-12 relative">
+
+        <div class="flex items-end gap-4">
+
+            <!-- AVATAR -->
+            <div class="w-24 h-24 rounded-lg overflow-hidden border-4 border-white dark:border-dark-second bg-white">
+                {% if group.image %}
+                    <img src="{{ group.image.url }}"
+                         class="w-full h-full object-cover"
+                         alt="{{ group.name }}">
+                {% else %}
+                    <img src="{% static 'img/placeholder-group.png' %}"
+                         class="w-full h-full object-cover"
+                         alt="Grupo">
+                {% endif %}
+            </div>
+
+            <!-- INFO -->
+            <div class="flex-1">
+                <h1 class="text-2xl font-bold dark:text-dark-txt">
+                    {{ group.name }}
+                </h1>
+
+                <p class="text-sm text-gray-500">
+                    {{ group.get_privacy_display }}
+                    {% if group.location %}
+                        · {{ group.location }}
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- ACTION -->
+            <div class="text-right space-y-1">
+
+                {% if is_owner %}
+                    <span class="text-sm font-semibold text-blue-500">
+                        👑 Owner
+                    </span>
+
+                {% elif membership and membership.status == "pending" %}
+                    <span class="text-sm text-yellow-500">
+                        ⏳ Solicitud pendiente
+                    </span>
+
+                {% elif membership and membership.status == "approved" %}
+                    <span class="text-sm text-green-600">
+                        ✔ Miembro
+                    </span>
+
+                {% else %}
+                    <a href="{% url 'groups:join' group.id %}"
+                       class="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg
+                              hover:bg-blue-600 transition">
+                        Unirse al grupo
+                    </a>
+                    {% endif %}
+
+                {% if is_member %}
+                    <a href="{% url 'groups:leave' group.id %}"
+                    class="text-red-500 text-sm">
+                    Salir del grupo
+                    </a>
+                {% endif %}
+
+            </div>
+                            
+            {% if not is_member %}
+
+                {% if is_following %}
+                    <a href="{% url 'groups:unfollow' group.pk %}"
+                    class="px-4 py-2 bg-gray-300 rounded">
+                    ❌ Dejar de seguir
+                    </a>
+                {% else %}
+                    <a href="{% url 'groups:follow' group.pk %}"
+                    class="px-4 py-2 bg-blue-500 text-white rounded">
+                    ⭐ Seguir grupo
+                    </a>
+                {% endif %}
+            {% endif %}
+
+        </div>
+
+        <!-- 📄 DESCRIPTION -->
+        {% if group.description %}
+        <p class="mt-4 text-gray-700 dark:text-dark-txt">
+            {{ group.description }}
+        </p>
+        {% endif %}
+
+        <!-- 🔧 ADMIN LINKS -->
+        {% if membership and membership.role in "owner admin" %}
+        <div class="mt-4">
+            <a href="{% url 'groups:requests' group.id %}"
+               class="text-sm text-blue-500 hover:underline">
+                Ver solicitudes pendientes
+            </a>
+        </div>
+        {% endif %}
+        {% if group.privacy == "public" or is_member %}
+            {% for m in members %}
+                <div class="flex items-center gap-2">
+                    {{ m.user.username }}
+                    {% if m.role == "admin" %}⭐{% endif %}
+                    {% if m.role == "owner" %}👑{% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-gray-400 text-sm">
+                Lista de miembros
+            </p>
+            {% if group.members_public or is_member %}
+                <ul>
+                    {% for member in members %}
+                        <li>{{ member.user.username }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-gray-500">
+                    🔒 Los miembros son privados
+                </p>
+            {% endif %}
+
+        {% endif %}
+
+
+    </div>
+<div class="flex gap-4 border-b mb-4">
+    <button data-tab="posts">📝 Posts</button>
+    <button data-tab="members">👥 Miembros</button>
+    <button data-tab="info">ℹ️ Info</button>
+</div>
+
+    <!-- 🧱 FEED PLACEHOLDER -->
+    <div class="mt-6 text-gray-400 text-center">
+        📌 Próximamente: publicaciones del grupo
+    </div>
+    {% if membership and membership.status == "approved" %}
+    <form method="post" action="{% url 'groups:create_group_post' group.id %}"
+        class="mt-6 bg-white dark:bg-dark-second p-4 rounded-lg shadow">
+        {% csrf_token %}
+        <textarea name="body"
+                rows="3"
+                placeholder="Escribí algo en el grupo…"
+                class="w-full rounded-lg border p-2 dark:bg-dark-third"></textarea>
+
+        <div class="text-right mt-2">
+            <button class="px-4 py-2 bg-blue-500 text-white rounded-lg">
+                Publicar
+            </button>
+        </div>
+    </form>
+    {% endif %}
+
+    {% for post in group.posts.all %}
+    <div class="bg-white dark:bg-dark-second p-4 rounded-lg shadow mt-4">
+        <p class="font-semibold">{{ post.author.username }}</p>
+        <p class="text-sm text-gray-500">
+            {{ post.created_at|timesince }} atrás
+        </p>
+        <p class="mt-2">{{ post.body }}</p>
+    </div>
+    {% empty %}
+    <p class="text-center text-gray-400 mt-6">
+        Todavía no hay publicaciones.
+    </p>
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}

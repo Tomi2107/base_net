@@ -13,6 +13,7 @@
 
 
 {% block content %}
+<div class="pt-24 max-w-6xl mx-auto px-3">
 
 <!-- STORE HEADER -->
 <div class="bg-white dark:bg-dark-second rounded-lg p-4 shadow mb-4">
@@ -89,7 +90,7 @@
 </div>
 
 <!-- STORE GRID -->
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
     {% for item in items %}
         {% include "components/store_item.html" with item=item %}
@@ -100,7 +101,7 @@
     {% endfor %}
 
 </div>
-
+</div>
 {% endblock content %}
 
 {% block right_sidebar %}
@@ -109,4 +110,12 @@
 
 {% block javascript %}
 <script src="{% static 'js/theme-toggle.js' %}"></script>
+{% if highlight_id %}
+<script>
+    const el = document.getElementById("storeitem-{{ highlight_id }}");
+    if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+</script>
+{% endif %}
 {% endblock javascript %}

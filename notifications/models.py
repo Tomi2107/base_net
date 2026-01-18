@@ -9,7 +9,10 @@ class Notification(models.Model):
     NOTIFICATION_TYPES = (
         ('friend_request', 'Friend Request'),
         ('message', 'Message'),
+        ('post', 'Post'),
+        ('pet', 'Mascota'),
         ('group', 'Group'),
+        ('store', 'Store'),
         ('system', 'System'),
     )
 

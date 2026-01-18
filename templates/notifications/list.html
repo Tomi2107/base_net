@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Notificaciones{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 py-6">
+
+    <!-- HEADER -->
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-semibold text-gray-800 dark:text-dark-txt">
+            🔔 Notificaciones
+        </h1>
+    </div>
+
+    <!-- LIST -->
+    <div class="bg-white dark:bg-dark-second rounded-lg shadow divide-y
+                divide-gray-200 dark:divide-dark-third">
+
+        {% for n in notifications %}
+        <a href="{% url 'notifications:go' n.id %}"
+           class="block px-5 py-4 transition
+           {% if not n.is_read %}
+               bg-gray-50 dark:bg-dark-third font-semibold
+           {% else %}
+               bg-white dark:bg-dark-second
+           {% endif %}
+           hover:bg-gray-100 dark:hover:bg-dark-third">
+
+            <div class="flex justify-between items-start">
+                <p class="text-sm text-gray-800 dark:text-dark-txt">
+                    {{ n.text }}
+                </p>
+
+                {% if not n.is_read %}
+                <span class="ml-3 text-xs bg-blue-500 text-white
+                             rounded-full px-2 py-0.5">
+                    nueva
+                </span>
+                {% endif %}
+            </div>
+
+            {% if n.created_at %}
+            <p class="text-xs text-gray-400 mt-1">
+                {{ n.created_at|timesince }} atrás
+            </p>
+            {% endif %}
+        </a>
+        {% empty %}
+        <div class="px-5 py-8 text-center text-gray-400">
+            No tenés notificaciones todavía
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

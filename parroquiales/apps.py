@@ -2,5 +2,8 @@ from django.apps import AppConfig
 
 
 class ParroquialesConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
     name = 'parroquiales'
+
+    def ready(self):
+        import parroquiales.signals
+        

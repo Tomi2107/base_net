@@ -102,6 +102,7 @@
 
 {% block right_sidebar %}
 {% include 'components/sidebars/right/sidebar.html' %}
+
 {% endblock %}
 
 {% block javascript %}
@@ -118,4 +119,12 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleOther();
 });
 </script>
+{% if highlight_id %}
+<script>
+    const el = document.getElementById("lostfoundpost-{{ highlight_id }}");
+    if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+</script>
+{% endif %}
 {% endblock %}

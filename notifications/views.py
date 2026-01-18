@@ -1,5 +1,4 @@
-# notifications/views.py
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import Notification
 
@@ -11,7 +10,21 @@ def go_notification(request, pk):
         to_user=request.user
     )
 
-    notification.is_read = True
-    notification.save()
+    # marcar como leída
+    if not notification.is_read:
+        notification.is_read = True
+        notification.save(update_fields=["is_read"])
 
     return redirect(notification.url)
+
+@login_required
+def notifications_list(request):
+    notifications = (
+        Notification.objects
+        .filter(to_user=request.user)
+        .order_by("-created_at")
+    )
+
+    return render(request, "notifications/list.html", {
+        "notifications": notifications
+    })

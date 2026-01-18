@@ -1,4 +1,13 @@
 {% load static %}
+<div
+  id="parroquialpost-{{ parroquialpost.id }}"
+  class="
+    bg-white dark:bg-dark-second rounded-lg shadow p-4
+    {% if highlight_id == parroquialpost.id|stringformat:'s' %}
+        ring-2 ring-blue-500 bg-blue-50 dark:bg-dark-third
+    {% endif %}
+  "
+>
 <div class="bg-white dark:bg-dark-second rounded-lg shadow p-4">
 
 <!-- MENU -->
@@ -42,3 +51,4 @@
                 
 
             </div>
+        </div>

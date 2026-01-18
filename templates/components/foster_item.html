@@ -1,4 +1,13 @@
 {% load static%}
+<div
+  id="fosteravailability-{{ fosteravailability.id }}"
+  class="
+    bg-white dark:bg-dark-second rounded-lg shadow p-4
+    {% if highlight_id == fosteravailability.id|stringformat:'s' %}
+        ring-2 ring-blue-500 bg-blue-50 dark:bg-dark-third
+    {% endif %}
+  "
+>
 <div class="p-4 bg-white dark:bg-dark-second rounded shadow">
                 {% with item=foster %}
                 <div class="flex justify-end p-2">
@@ -27,3 +36,4 @@
                         {% include "components/messages/start_chat_button.html" with target_user=foster.user %}
                     {% endif %}
                 </div>
+            </div>

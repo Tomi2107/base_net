@@ -7,12 +7,8 @@ class SavedByUserMixin:
     context_object_name = None
 
     def get_context_data(self, **kwargs):
-        print("🟡 SavedByUserMixin ejecutado en:", self.__class__.__name__)
         context = super().get_context_data(**kwargs)
-        
-        print("🟡 context_object_name:", self.context_object_name)
-        print("🟡 model_type:", self.model_type)
-
+      
         if not self.model_type:
             raise ImproperlyConfigured(
                 f"{self.__class__.__name__} requiere model_type"

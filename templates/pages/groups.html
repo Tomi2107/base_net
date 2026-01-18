@@ -120,4 +120,12 @@
 
 {% block javascript %}
 <script src="{% static 'js/theme-toggle.js' %}"></script>
+{% if highlight_id %}
+<script>
+    const el = document.getElementById("group-{{ highlight_id }}");
+    if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+</script>
+{% endif %}
 {% endblock javascript %}

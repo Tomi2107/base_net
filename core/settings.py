@@ -26,6 +26,7 @@ NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 # Application definition
 
 INSTALLED_APPS = [
+    # Django core
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -35,42 +36,37 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.humanize',
 
+    # Auth / terceros
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
 
     'crispy_forms',
-    "crispy_tailwind",
+    'crispy_tailwind',
 
+    # Core apps
     'core',
     'accounts',
-
     'social',
 
-    'parroquiales',
-
-    'lost_found',
-
-    'reels',
-
-    'store',
-
-    'groups',
-
-    'pets',
-    
-    "foster",
-    
-    "friends",
-    
-    "search",
-    
+    # 🟢 Apps con signals (USAR AppConfig)
+    'friends.apps.FriendsConfig',          # si tenés signals ahí
     'notifications.apps.NotificationsConfig',
-    
-    "interactions",
-    
-    "messaging",
+    'lost_found.apps.LostFoundConfig',
+    'parroquiales.apps.ParroquialesConfig',
+    'store.apps.StoreConfig',
+    'groups.apps.GroupsConfig',
+    'foster.apps.FosterConfig',
+
+    # Otras apps
+    'reels',
+    'pets',
+    'search',
+    'interactions',
+    'messaging.apps.MessagingConfig',
+
 ]
+
 
 SITE_ID = 1
 
@@ -132,10 +128,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'notifications.context_processors.notifications_count',
+                'notifications.context_processors.notifications_nav',
                 'pets.context_processors.user_pets',
                 'messaging.context_processors.messages_preview',    
                 "messaging.context_processors.contacts_list",
+                "groups.context_processors.groups_sidebar",
 
             ],
         },
@@ -151,7 +148,7 @@ DATABASES = { 'default': { 'ENGINE': 'django.db.backends.mysql', 'NAME': 'mascot
 
 # DATABASES = {
 #     "default": env.db("DATABASE_URL", default="//postgres:1@127.0.0.1:5432/social"),
-# }
+#}
 
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
