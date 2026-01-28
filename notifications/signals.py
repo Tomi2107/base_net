@@ -11,6 +11,6 @@ def welcome_notification(sender, instance, created, **kwargs):
         Notification.objects.create(
             to_user=instance,
             notification_type="system",
-            text="Bienvenido a la red 🐾",
+            text="Bienvenido a la red ",
             url="/"
         )
