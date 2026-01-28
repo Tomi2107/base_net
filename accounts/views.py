@@ -1,18 +1,15 @@
-from accounts.forms import EditProfileForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, View
-from accounts.models import Profile, UserOpinion
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-User = get_user_model()
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.template import loader
 from django.contrib import messages
 from django.http import HttpResponse
-from .forms import UserOpinionForm, UserOpinionForm
-
 from django.db.models import Avg
-from .models import UserOpinion
+
+from .models import Profile, UserOpinion
+from .forms import UserOpinionForm, EditProfileForm
 
 from pets.models import Pet
 from pets.forms import PetForm
@@ -23,21 +20,16 @@ from foster.forms import FosterAvailabilityForm
 from math import floor
 from friends.utils import get_friendship_status
 
-from django.contrib import messages
-
 from ads.services import get_ads_for_user
 from ads.models import Ad
 
-    
+User = get_user_model()    
 
 @login_required
 def UserProfileView(request, username):
     user = get_object_or_404(User, username=username)
     profile = get_object_or_404(Profile, user=user)
     pets = user.pets.all()
-
-    # 🔹 FRIENDSHIP STATUS (🔥 ESTO FALTABA)
-    friendship_status = get_friendship_status(request.user, user)
 
     followers = profile.followers.all()
     is_following = request.user in followers

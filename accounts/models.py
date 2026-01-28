@@ -51,10 +51,10 @@ class Profile(models.Model):
     date_created = models.DateField(auto_now_add=True)
 
     #User info
-    location = models.CharField(max_length=50, null=True, blank=True)
-    url = models.CharField(max_length=80, null=True, blank=True)
+    location = models.CharField(max_length=50, blank=True)
+    url = models.CharField(max_length=80, blank=True)
     birthday = models.DateField(null=True, blank=True)
-    bio = models.TextField(max_length=150, null=True, blank=True)
+    bio = models.TextField(max_length=150,  blank=True)
 
     zone = models.ForeignKey(
         "ads.Zone",

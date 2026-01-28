@@ -1,4 +1,4 @@
-{% extends 'users/base.html' %}
+{% extends 'base.html' %}
 
 {% load static %}
 {% load humanize %}
@@ -16,6 +16,7 @@
 {% endblock right_sidebar %}
 
 {% block content %}
+<main class=' min-h-screen w-full py-5 overflow-x-hidden'>
 
 <!-- search/results.html -->
 <h1 class="text-xl font-bold mb-4">
@@ -25,7 +26,7 @@
 <section class="mb-6">
     <h2 class="font-semibold mb-2">Users</h2>
 
-    {% for profile in users %}
+    {% for profile in profiles %}
         <div class="p-2 border-b">
             <a href="{% url 'users:profile' profile.user.username %}">
                 {{ profile.user.username }}
@@ -52,5 +53,138 @@
     {% endfor %}
 </section>
 
+<section>
+    <h2 class="font-semibold mb-2">Opiniones</h2>
 
+    {% for opinion in opinions %}
+        <div class="border rounded-lg bg-white dark:bg-dark-main p-3 mb-2">
+
+            <!-- Stars + author -->
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1 text-yellow-400 text-sm">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= opinion.rating %}
+                            ★
+                        {% else %}
+                            ☆
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <span class="text-xs text-gray-500">
+                    {% if opinion.is_anonymous %}
+                        Anónimo
+                    {% else %}
+                        {{ opinion.author.username }}
+                    {% endif %}
+                </span>
+            </div>
+
+            <!-- Comment -->
+            <p class="mt-2 text-sm text-gray-700 dark:text-dark-txt">
+                {{ opinion.comment }}
+            </p>
+
+            <!-- Profile reviewed -->
+            {% if opinion.profile %}
+                <p class="text-xs text-gray-500 mt-1">
+                    Sobre
+                    <a href="{% url 'users:profile' opinion.profile.user.username %}"
+                    class="underline">
+                        {{ opinion.profile.user.username }}
+                    </a>
+                </p>
+            {% else %}
+                <p class="text-xs text-gray-400 mt-1">
+                    Opinión general
+                </p>
+            {% endif %}
+
+
+        </div>
+    {% empty %}
+        <p class="text-sm opacity-60">No opinions found</p>
+    {% endfor %}
+</section>
+
+
+<section class="mb-6">
+    <h2 class="font-semibold mb-2">Transito</h2>
+
+{% if fosters %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {% for foster in fosters %}
+
+            {% include "components/foster_item.html" with foster=foster %}
+    
+            {% endfor %}
+
+        </div>
+       
+    {% else %}
+        <p class="text-sm opacity-60">
+            not found.
+        </p>
+    {% endif %}
+</section>
+
+<section class="mb-6">
+    <h2 class="font-semibold mb-2">Reels</h2>
+
+    {% for reel in reels %}
+        <div class="p-2 border-b">
+            <p class="text-sm">
+                {{ reel.caption|truncatechars:120 }}
+            </p>
+            <span class="text-xs opacity-60">
+                por {{ reel.author.username }}
+            </span>
+        </div>
+    {% empty %}
+        <p class="text-sm opacity-60">No reels found</p>
+    {% endfor %}
+</section>
+
+
+<section class="mb-6">
+    <h2 class="font-semibold mb-2">Groups</h2>
+
+    
+{% for group in groups %}
+        {% include "components/group_item.html" with group=group %}
+ 
+    {% empty %}
+            <p class="text-sm opacity-60">
+                Todavía no hay grupos creados.
+            </p>
+    {% endfor %}
+</section>
+
+<section class="mb-6">
+    <h2 class="font-semibold mb-2">Parroquiales</h2>
+
+    
+        {% for post in parroquiales_items %}
+             {% include "components/parroquiales_item.html" with post=post %}
+        {% empty %}
+            <p class="text-sm opacity-60">
+                No hay publicaciones en tu zona.
+            </p>
+
+        {% endfor %}
+
+</section>
+
+<section class="mb-6">
+    <h2 class="font-semibold mb-2">Store</h2>
+ {% for item in store_items %}
+        {% include "components/store_item.html" with item=item %}
+    {% empty %}
+        <p class="text-sm opacity-60">
+            No hay publicaciones en el store.
+        </p>
+    {% endfor %}
+</section>
+
+</main>
 {% endblock content %}
