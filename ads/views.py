@@ -16,7 +16,7 @@ def ad_click(request, ad_id):
     
     
 
-    return redirect(ad.url)
+    return redirect(ad.link)
 
 # ads/views.py
 
