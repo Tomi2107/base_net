@@ -1,17 +1,29 @@
 {% load static %}
 
 <!-- PUBLICIDAD / DESTACADO -->
+
 <div class="p-4 bg-white dark:bg-dark-second rounded-lg shadow">
-    <h3 class="text-sm font-semibold text-gray-600 dark:text-dark-txt mb-2">
+    <h3 class="text-sm font-semibold mb-2">
         Destacado
     </h3>
 
-    <div class="bg-gray-200 dark:bg-dark-third rounded-lg h-32 flex items-center justify-center text-gray-500 text-sm">
-        Espacio Publicitario
-    </div>
+    {% for ad in sidebar_ads %}
+        <a href="{% url 'ads:click' ad.id %}">
+            {% if ad.image %}
+                <img src="{{ ad.image.url }}"
+                     class="rounded mb-2" alt="ads">
+            {% else %}
+                <p class="text-sm">{{ ad.title }}</p>
+            {% endif %}
+        </a>
+    {% empty %}
+        <div class="text-gray-400 text-sm">
+            Espacio Publicitario
+        </div>
+    {% endfor %}
+    <a href="{% url 'ads:create' %}">Publicitá</a>
 </div>
 
-<!-- CONTACTOS / MENSAJERÍA -->
 <!-- CONTACTOS / MENSAJERÍA -->
 <div class="p-4 bg-white dark:bg-dark-second rounded-lg shadow">
     <h3 class="text-sm font-semibold text-gray-600 dark:text-dark-txt mb-3">

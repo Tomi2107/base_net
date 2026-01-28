@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}inbox{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+{% block content %}
+
+<h1 class="text-lg font-semibold mb-4">Mis Publicidades</h1>
+
+<a href="{% url 'ads:create' %}"
+   class="inline-block mb-4 bg-blue-600 text-white px-4 py-2 rounded">
+   + Nueva publicidad
+</a>
+
+{% for ad in ads %}
+<div class="bg-white p-4 rounded shadow mb-3">
+    <h2 class="font-semibold">{{ ad.title }}</h2>
+
+    <p class="text-sm text-gray-500">
+        Estado:
+        {% if ad.active %}
+            🟢 Activa
+        {% elif ad.approved %}
+            🟡 Aprobada (pendiente de activación)
+        {% else %}
+            🔴 En revisión
+        {% endif %}
+    </p>
+
+    <p class="text-xs mt-2">
+        Views: {{ ad.views }} | Clicks: {{ ad.clicks }}
+    </p>
+
+    <div class="mt-3 flex gap-3">
+        {% comment %} <a href="{% url 'ads:edit' ad.id %}" class="text-blue-600 text-sm">
+            Editar
+        </a> {% endcomment %}
+
+        {% if ad.approved and not ad.active %}
+            <a href="{% url 'ads:activate' ad.id %}" class="text-green-600 text-sm">
+                Activar (pagar)
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% empty %}
+<p>No tenés publicidades creadas.</p>
+{% endfor %}
+
+{% endblock %}

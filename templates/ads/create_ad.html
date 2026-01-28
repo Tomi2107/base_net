@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}inbox{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+
+{% block content %}
+<div class="max-w-xl mx-auto pt-24 px-4">
+
+    <h1 class="text-xl font-bold mb-4">
+        Crear publicidad
+    </h1>
+
+    <form method="post" enctype="multipart/form-data"
+          class="bg-white dark:bg-dark-second p-6 rounded-lg shadow space-y-4">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div>
+            <label class="block text-sm font-medium">Título</label>
+            {{ form.title }}
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium">Imagen</label>
+            {{ form.image }}
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium">Link</label>
+            {{ form.link }}
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium">Tipo de anuncio</label>
+            {{ form.ad_type }}
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium">
+                Zonas (solo para sidebar)
+            </label>
+            {{ form.zones }}
+        </div>
+
+        <button class="w-full py-2 bg-blue-500 text-white rounded">
+            Crear anuncio
+        </button>
+    </form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}inbox{% endblock %}
+
+{% block navbar %}
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+{% block left_sidebar %}
+{% include 'components/sidebars/left/sidebar.html' %}
+{% endblock left_sidebar %}
+
+{% block right_sidebar %}
+{% include 'components/sidebars/right/sidebar.html' %}
+{% endblock right_sidebar %}
+{% block content %}
+
+
+<h1 class="text-lg font-semibold mb-4">Panel de Publicidades</h1>
+
+<h2 class="font-semibold mb-2">Pendientes de aprobación</h2>
+
+{% for ad in pending %}
+<div class="bg-white p-3 rounded shadow mb-2">
+    <strong>{{ ad.title }}</strong>
+    <p class="text-xs">Usuario: {{ ad.advertiser.username }}</p>
+
+    <a href="{% url 'ads:approve' ad.id %}" class="text-green-600 text-sm mr-3">
+        Aprobar
+    </a>
+    <a href="{% url 'ads:reject' ad.id %}" class="text-red-600 text-sm">
+        Rechazar
+    </a>
+</div>
+{% empty %}
+<p>No hay publicidades pendientes.</p>
+{% endfor %}
+{% endblock %}

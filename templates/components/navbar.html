@@ -248,6 +248,23 @@
 
             </div>
         </li>
+        {% if user.is_authenticated and not user.is_staff %}
+        <li class="relative group">
+            <a href="{% url 'donations:donate' %}"
+            class="px-3 py-2 rounded hover:bg-green-100 text-green-700 font-semibold transition">
+                💚 Doná
+            </a>
+
+            <!-- Tooltip -->
+            <div class="absolute left-1/2 -translate-x-1/2 top-full mt-2
+                        hidden group-hover:block
+                        bg-black text-white text-xs rounded px-3 py-2
+                        w-64 text-center z-50 shadow-lg">
+                Donando ayudás al productor de esta web a mejorarla y sumar nuevas funciones.
+            </div>
+        </li>
+        {% endif %}
+
         <li>
             {% comment %} <button id="theme-toggle"
            class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-dark-third transition">
@@ -255,6 +272,14 @@
             </button> {% endcomment %}
 
         </li>
+            {% if request.user.is_staff %}
+                <li>
+                    <a href="{% url 'ads:admin_dashboard' %}"
+                    class="block p-2 rounded hover:bg-gray-100 dark:hover:bg-dark-third">
+                        🧠 Admin Publicidades
+                    </a>
+                </li>
+                {% endif %}
         {% endif %}
     </ul>
     <!-- END RIGHT NAV -->

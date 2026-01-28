@@ -25,6 +25,11 @@ from friends.utils import get_friendship_status
 
 from django.contrib import messages
 
+from ads.services import get_ads_for_user
+from ads.models import Ad
+
+    
+
 @login_required
 def UserProfileView(request, username):
     user = get_object_or_404(User, username=username)
@@ -75,7 +80,14 @@ def UserProfileView(request, username):
     menu = {
         "is_self": request.user == user,
         "is_friend": friendship_status == "friends",
-    }    
+    }
+    
+    ads = get_ads_for_user(request.user)
+
+    for ad in ads:
+        ad.views += 1
+
+    Ad.objects.bulk_update(ads, ["views"])
 
     context = {
         "profile": profile,
@@ -97,6 +109,8 @@ def UserProfileView(request, username):
         "context_menu": menu,
         "is_self": request.user == user,
         "is_friend": friendship_status == "friends",
+        "ads": ads,
+    
     }
 
     return render(request, "users/detail.html", context)

@@ -56,6 +56,13 @@ class Profile(models.Model):
     birthday = models.DateField(null=True, blank=True)
     bio = models.TextField(max_length=150, null=True, blank=True)
 
+    zone = models.ForeignKey(
+        "ads.Zone",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
     def __str__(self):
         return self.user.username
 

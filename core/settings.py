@@ -63,14 +63,13 @@ INSTALLED_APPS = [
     'search',
     'interactions',
     'messaging.apps.MessagingConfig',
+    
+    'ads',
 
 ]
 
 
 SITE_ID = 1
-
-CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
-CRISPY_TEMPLATE_PACK = "tailwind"
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -132,6 +131,7 @@ TEMPLATES = [
                 'messaging.context_processors.messages_preview',    
                 "messaging.context_processors.contacts_list",
                 "groups.context_processors.groups_sidebar",
+                "ads.context_processors.ads_processor",
 
             ],
         },
@@ -147,7 +147,7 @@ DATABASES = { 'default': { 'ENGINE': 'django.db.backends.mysql', 'NAME': 'mascot
 
 # DATABASES = {
 #     "default": env.db("DATABASE_URL", default="//postgres:1@127.0.0.1:5432/social"),
-#}
+# }
 
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 

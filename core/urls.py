@@ -48,7 +48,9 @@ urlpatterns = [
     
     path("terminos/", terms_view, name="terms"),
 
+    path("ads/", include("ads.urls")),    
     
+    path("donations/", include("donations.urls")),
     
 
 ]
